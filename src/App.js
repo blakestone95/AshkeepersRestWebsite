@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
-// import favicon from '../assets/images/favicon.ico';
+import { BrowserRouter, Route } from 'react-router-dom';
+
+import Home from 'Home';
+import 'style.less';
 
 export default class App extends Component {
   render() {
-    return <p>This is my new react app</p>;
+    return (
+      <BrowserRouter>
+        <div>
+          <Route exact path="/" component={Home}/>
+        </div>
+      </BrowserRouter>
+    );
   }
 }

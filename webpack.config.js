@@ -7,6 +7,12 @@ const currDir = path.join(__dirname, './');
 // TODO: Fix favicon not working in dev mode. Fix serving minified files instead of normal files.
 module.exports = {
   entry: './index.js',
+  resolve: {
+    modules: [
+      path.resolve('./node_modules'),
+      path.resolve('./src')
+    ]
+  },
   mode: 'development', // Can add more modes later if necessary
   module: {
     rules: [
@@ -42,7 +48,8 @@ module.exports = {
   },
   devServer: {
     contentBase: currDir,
-    historyApiFallback: true
+    historyApiFallback: true,
+    inline: true
   },
   plugins: [
     new HtmlWebpackPlugin({
