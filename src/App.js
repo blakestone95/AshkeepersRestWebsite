@@ -13,22 +13,26 @@ import 'style.less';
 export const history = createHistory();
 
 export default class App extends Component {
-  render() {
-    return (
-      <BrowserRouter>
-        <div>
-          <NavBar />
-          <Switch>
-            <Redirect exact from="/" to={ROUTE.home} />
+	render() {
+		return (
+			<BrowserRouter>
+				<div className="legion-body">
+					<NavBar />
+					<div className="legion-page-container">
+						<div className="legion-sidebar-left" />
+						<Switch>
+							<Redirect exact from="/" to={ROUTE.home} />
 
-            <Route exact path={ROUTE.home} component={Home} />
-            <Route exact path={ROUTE.tab2} component={Home} />
-            <Route exact path={ROUTE.tab3} component={Home} />
-            <Route exact path={ROUTE.tab4} component={Home} />
-            <Route exact path={ROUTE.tab5} component={Home} />
-          </Switch>
-        </div>
-      </BrowserRouter>
-    );
-  }
+							<Route exact path={ROUTE.home} component={Home} />
+							<Route exact path={ROUTE.tab2} component={Home} />
+							<Route exact path={ROUTE.tab3} component={Home} />
+							<Route exact path={ROUTE.tab4} component={Home} />
+							<Route exact path={ROUTE.tab5} component={Home} />
+						</Switch>
+						<div className="legion-sidebar-right" />
+					</div>
+				</div>
+			</BrowserRouter>
+		);
+	}
 }
