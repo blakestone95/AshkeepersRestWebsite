@@ -1,0 +1,54 @@
+// Application wide styles go here
+
+html {
+  height: 100%;
+  font-family: 'lato';
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  background-color: #111;
+}
+
+div {
+  display: block;
+  color: #fff;
+}
+
+#app {
+  height: 100%;
+}
+
+.legion-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .legion-page-container {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    .legion-sidebar-left {
+      flex: 0 0 auto;
+      width: 20%;
+      height: 100%;
+      border-right: solid 1px #fff;
+    }
+
+    div {
+      width: 60%;
+      flex: 0 0 auto;
+    }
+
+    .legion-sidebar-right {
+      flex: 0 0 auto;
+      width: 20%;
+      height: 100%;
+      border-left: solid 1px #fff;
+    }
+  }
+}
+
+@import "./bootstrap";
