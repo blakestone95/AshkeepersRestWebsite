@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 // TODO: Fix favicon not working in dev mode. Fix serving minified files instead of normal files.
 module.exports = {
@@ -8,7 +9,6 @@ module.exports = {
   resolve: {
     modules: [path.resolve('./node_modules'), path.resolve('./src')]
   },
-  mode: 'development', // Can add more modes later if necessary
   module: {
     rules: [
       {
@@ -38,24 +38,16 @@ module.exports = {
     ]
   },
   output: {
-    filename: 'bundle.js',
-    path: path.resolve('./dist'),
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
     publicPath: '/'
   },
-  devServer: {
-    contentBase: path.resolve('./dist'),
-    publicPath: '/',
-    historyApiFallback: true,
-    inline: true
-  },
   plugins: [
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       filename: path.resolve('./dist/index.html'),
       favicon: path.resolve('./assets/images/favicon.ico'),
       template: path.resolve('./index.html')
     })
-  ],
-  performance: {
-    hints: false
-  }
+  ]
 };
