@@ -11,8 +11,8 @@ php artisan view:clear
 php artisan clear-compiled
 
 REM Update git
-git fetch -p
-git pull
+REM git fetch -p
+REM git pull
 
 REM Install composer packages
 call composer install
