@@ -3,7 +3,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-// TODO: Fix favicon not working in dev mode. Fix serving minified files instead of normal files.
 module.exports = {
   entry: './index.js',
   resolve: {
