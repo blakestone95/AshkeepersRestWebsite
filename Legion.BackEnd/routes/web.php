@@ -11,7 +11,6 @@
 |
 */
 
-Route::get('/{path?}', [
-    'as'    => 'home',
-    'uses'  => 'HomeController@index'
-]);
+Route::get('{any?}', function ($any = null) {
+    return view('index');
+})->where('any', '.*');
