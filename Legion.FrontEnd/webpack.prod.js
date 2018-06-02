@@ -1,14 +1,38 @@
 const merge = require('webpack-merge');
-const common = require('./webpack.common.js');
+const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-// TODO: Point output to Laravel backend.  Right now to goes to "./dist".
+const common = require('./webpack.common.js');
+
 module.exports = merge(common, {
-  mode: 'production',
-  devtool: 'source-map',
-  plugins: [
-    new UglifyJSPlugin({
-      sourceMap: true
-    })
-  ]
+	mode: 'production',
+	output: {
+		filename: '[name].bundle.js',
+		path: path.resolve('../Legion.Backend/public/js'),
+		publicPath: '/js/'
+	},
+	devtool: 'source-map',
+	plugins: [
+		new CleanWebpackPlugin(
+			[
+				path.resolve('../Legion.Backend/public/js'),
+				path.resolve('../Legion.Backend/resources/views')
+			],
+			{
+				root: path.resolve('../')
+			}
+		),
+		new HtmlWebpackPlugin({
+			filename: path.resolve(
+				'../Legion.Backend/resources/views/index.blade.php'
+			),
+			favicon: path.resolve('./assets/images/favicon.ico'),
+			template: path.resolve('./index.html')
+		}),
+		new UglifyJSPlugin({
+			sourceMap: true
+		})
+	]
 });
