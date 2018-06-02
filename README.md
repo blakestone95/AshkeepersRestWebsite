@@ -12,7 +12,6 @@ learn JS, React, Redux, etc. along the way.
 - First copy a .env.example to .env
 - Run `composer install`
 - Run `php artisan key:generate`
-- Run `deploy-dev.bat`
 
 ## Testing
 To run a local web server to test things, run `php artisan serve`.
