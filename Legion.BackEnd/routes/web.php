@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('{any?}', function ($any = null) {
+Route::get('{any?}', function () {
     return view('index');
 })->where('any', '.*');
