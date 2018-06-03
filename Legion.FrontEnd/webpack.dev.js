@@ -15,7 +15,13 @@ module.exports = merge(common, {
 	devServer: {
 		publicPath: '/',
 		historyApiFallback: true,
-		inline: true
+		inline: true,
+		proxy: {
+			'/api': {
+				target: 'http://localhost:8000',
+				secure: false
+			}
+		}
 	},
 	performance: {
 		hints: false
