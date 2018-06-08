@@ -7,7 +7,7 @@ learn JS, React, Redux, etc. along the way.
 ## Requirements
 - [Node.js and NPM](https://www.npmjs.com/)
 - [Composer](https://getcomposer.org/)
-- [PHP 7.0+](http://php.net/downloads.php) - Note, if you install PHP manually, make sure to add it to your system-wide path variable.
+- [PHP 7.0+](http://php.net/downloads.php) - Note, if you install PHP manually, make sure to add it to your system-wide path variable. If you are unsure of what thread type to select, we recommend using the non thread safe version.
 
 A note about IDE's: Use whatever you want, but if you're not sure what to choose, consider [Visual Studio Code](https://code.visualstudio.com/) (VS Code).  This is a fancy text editor that supports a rich development experience for JavaScript while still trying to be as lightweight as possible.  While it doesn't need any plugins to be useful right out of the box, there are quite a few very useful ones out there.  A later section will cover some VS Code setup.
 
@@ -39,7 +39,7 @@ Must be done for each new setup
 
 ### Notes
 - For now, you must run both back end and front end to do development
-    - In the future, we make figure out a way to proxy a testing server
+    - In the future, we may figure out a way to proxy a testing server
 - Ctrl-C will stop running terminal processes
 
 # VS Code
@@ -56,6 +56,6 @@ Useful plugins:
 - Path Intellisense
     - Helps out with typing paths in your code
 - Python
-    - All-in-one package for python editting in VS Code
+    - All-in-one package for python editing in VS Code
 - vscode-icons
     - Tons of neat icons for files and folders in VS Code
