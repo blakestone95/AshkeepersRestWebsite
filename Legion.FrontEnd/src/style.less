@@ -1,4 +1,5 @@
 // Application wide styles go here
+@import '~variables.less';
 
 html {
 	height: 100%;
@@ -8,12 +9,12 @@ html {
 body {
 	height: 100%;
 	margin: 0;
-	background-color: #111;
+	background-color: @app-background-color;
 }
 
 div {
 	display: block;
-	color: #fff;
+	color: @app-text-color;
 }
 
 #app {
@@ -34,7 +35,7 @@ div {
 			flex: 0 0 auto;
 			width: 20%;
 			height: 100%;
-			border-right: solid 1px #fff;
+			border-right: solid 1px @app-border-color;
 		}
 
 		div {
@@ -46,7 +47,7 @@ div {
 			flex: 0 0 auto;
 			width: 20%;
 			height: 100%;
-			border-left: solid 1px #fff;
+			border-left: solid 1px @app-border-color;
 		}
 	}
 }
