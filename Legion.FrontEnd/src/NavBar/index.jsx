@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ROUTE } from 'util/enums';
+import { PATHS } from 'util/paths';
 
 class NavBar extends Component {
   render() {
     return (
       <div className="legion-navbar">
-        <Link to={ROUTE.home} replace>
-          Home
+        <Link to={PATHS.Home.path} replace>
+          {PATHS.Home.display}
         </Link>
-        <Link to={ROUTE.tab2} replace>
-          Tab2
+        <Link to={PATHS.Tab2.path} replace>
+          {PATHS.Tab2.display}
         </Link>
-        <Link to={ROUTE.tab3} replace>
-          Tab3
+        <Link to={PATHS.Tab3.path} replace>
+          {PATHS.Tab3.display}
         </Link>
-        <Link to={ROUTE.tab4} replace>
-          Tab4
+        <Link to={PATHS.Tab4.path} replace>
+          {PATHS.Tab4.display}
         </Link>
-        <Link to={ROUTE.tab5} replace>
-          Tab5
+        <Link to={PATHS.Tab5.path} replace>
+          {PATHS.Tab5.display}
         </Link>
       </div>
     );

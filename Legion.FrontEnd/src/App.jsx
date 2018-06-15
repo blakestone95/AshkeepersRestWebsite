@@ -3,10 +3,9 @@ import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 
 // Components
-import Home from 'Home';
 import NavBar from 'NavBar';
 
-import { ROUTE } from 'util/enums';
+import { PATHS } from 'util/paths';
 
 import 'style.less';
 
@@ -21,13 +20,33 @@ export default class App extends Component {
           <div className="legion-page-container">
             <div className="legion-sidebar-left" />
             <Switch>
-              <Redirect exact from="/" to={ROUTE.home} />
+              <Redirect exact from="/" to={PATHS.home} />
 
-              <Route exact path={ROUTE.home} component={Home} />
-              <Route exact path={ROUTE.tab2} component={Home} />
-              <Route exact path={ROUTE.tab3} component={Home} />
-              <Route exact path={ROUTE.tab4} component={Home} />
-              <Route exact path={ROUTE.tab5} component={Home} />
+              <Route
+                exact
+                path={PATHS.Home.path}
+                component={PATHS.Home.component}
+              />
+              <Route
+                exact
+                path={PATHS.Tab2.path}
+                component={PATHS.Tab2.component}
+              />
+              <Route
+                exact
+                path={PATHS.Tab3.path}
+                component={PATHS.Tab3.component}
+              />
+              <Route
+                exact
+                path={PATHS.Tab4.path}
+                component={PATHS.Tab4.component}
+              />
+              <Route
+                exact
+                path={PATHS.Tab5.path}
+                component={PATHS.Tab5.component}
+              />
             </Switch>
             <div className="legion-sidebar-right" />
           </div>
