@@ -13,6 +13,15 @@ export const history = createHistory();
 
 export default class App extends Component {
   render() {
+    const routes = Object.values(PATHS).map(pathObj => (
+      <Route
+        exact
+        path={pathObj.path}
+        component={pathObj.component}
+        key={pathObj.display}
+      />
+    ));
+
     return (
       <BrowserRouter>
         <div className="legion-body">
@@ -23,31 +32,7 @@ export default class App extends Component {
               <Switch>
                 <Redirect exact from="/" to={PATHS.Home.path} />
 
-                <Route
-                  exact
-                  path={PATHS.Home.path}
-                  component={PATHS.Home.component}
-                />
-                <Route
-                  exact
-                  path={PATHS.Tab2.path}
-                  component={PATHS.Tab2.component}
-                />
-                <Route
-                  exact
-                  path={PATHS.Tab3.path}
-                  component={PATHS.Tab3.component}
-                />
-                <Route
-                  exact
-                  path={PATHS.Tab4.path}
-                  component={PATHS.Tab4.component}
-                />
-                <Route
-                  exact
-                  path={PATHS.Tab5.path}
-                  component={PATHS.Tab5.component}
-                />
+                {routes}
               </Switch>
             </div>
             <div className="legion-sidebar-right" />

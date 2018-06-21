@@ -1,4 +1,10 @@
 import Home from 'Home';
+import AnnouncementBoard from 'announcements/AnnouncementBoard';
+import CreateAnnouncement from 'announcements/CreateAnnouncement';
+import ViewAnnouncement from 'announcements/ViewAnnouncement';
+import EventsCalendar from 'events/EventsCalendar';
+import CreateEvent from 'events/CreateEvent';
+import ViewEvent from 'events/ViewEvent';
 
 export const PATHS = {
   Home: {
@@ -6,24 +12,34 @@ export const PATHS = {
     component: Home,
     display: 'Home',
   },
-  Tab2: {
-    path: '/Tab2',
-    component: Home,
-    display: 'Tab 2',
+  AnnouncementBoard: {
+    path: '/Announcements/Board',
+    component: AnnouncementBoard,
+    display: 'Announcements Board',
   },
-  Tab3: {
-    path: '/Tab3',
-    component: Home,
-    display: 'Tab 3',
+  CreateAnnouncement: {
+    path: '/Announcements/Create',
+    component: CreateAnnouncement,
+    display: 'Create Announcement',
   },
-  Tab4: {
-    path: '/Tab4',
-    component: Home,
-    display: 'Tab 4',
+  ViewAnnouncement: {
+    path: '/Announcements/View',
+    component: ViewAnnouncement,
+    display: 'View Announcement',
   },
-  Tab5: {
-    path: '/Tab5',
-    component: Home,
-    display: 'Tab 5',
+  EventsCalendar: {
+    path: '/Events/Calendar',
+    component: EventsCalendar,
+    display: 'Events Calendar',
+  },
+  CreateEvent: {
+    path: '/Events/Create',
+    component: CreateEvent,
+    display: 'Create Event',
+  },
+  ViewEvent: {
+    path: '/Events/View',
+    component: ViewEvent,
+    display: 'View Event',
   },
 };

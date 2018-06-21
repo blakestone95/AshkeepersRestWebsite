@@ -10,17 +10,14 @@ class NavBar extends Component {
         <Link to={PATHS.Home.path} replace>
           {PATHS.Home.display}
         </Link>
-        <Link to={PATHS.Tab2.path} replace>
-          {PATHS.Tab2.display}
+        <Link to={PATHS.AnnouncementBoard.path} replace>
+          {PATHS.AnnouncementBoard.display}
         </Link>
-        <Link to={PATHS.Tab3.path} replace>
-          {PATHS.Tab3.display}
+        <Link to={PATHS.EventsCalendar.path} replace>
+          {PATHS.EventsCalendar.display}
         </Link>
-        <Link to={PATHS.Tab4.path} replace>
-          {PATHS.Tab4.display}
-        </Link>
-        <Link to={PATHS.Tab5.path} replace>
-          {PATHS.Tab5.display}
+        <Link to={PATHS.CreateEvent.path} replace>
+          {PATHS.CreateEvent.display}
         </Link>
       </div>
     );
