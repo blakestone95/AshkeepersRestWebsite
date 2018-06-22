@@ -84,10 +84,14 @@ It is essential for developers to review each other's work to make sure that we 
 Once another developer has approved your **pull request**, you are allowed to merge it into the *development* branch.  Waiting for feedback from multiple people is never a bad idea, however.
 
 # Testing
+It's important to continually test features as you develop.  You, as a developer, are the first line of defense for catching bugs, and the hope is that you make tester's jobs very easy.
+
 ## Unit Tests
 Though it is difficult to write automated tests for web applications, there are a few things we want to have tests for.  You should write tests for functionality that does not depend on users' actions.  One example is utility or helper functions on the front-end or back-end.
 
 Don't spend huge amounts of time writing tests, but they are useful to preemptively catch bugs and verify functionality in order to save time later.
+
+##### Update later with the testing library we're using.  Jest and Cypress are good options.
 
 ## Regression Testing
 Whenever refactoring occurs, whether it be to improve existing functionality, or upgrade packages or whatever, it's important to retest what changed.  This will follow the regular testing process.
