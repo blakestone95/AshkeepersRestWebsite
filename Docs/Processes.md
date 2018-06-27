@@ -84,9 +84,21 @@ It is essential for developers to review each other's work to make sure that we 
 Once another developer has approved your **pull request**, you are allowed to merge it into the *development* branch.  Waiting for feedback from multiple people is never a bad idea, however.
 
 # Testing
-A separate branch exists for testing.  The idea is that this prevents things from changing on a tester who is partway through testing a feature.  This prevents the introduction of bugs that testers might miss.
+It's important to continually test features as you develop.  You, as a developer, are the first line of defense for catching bugs, and the hope is that you make tester's jobs very easy.
+
+## Unit Tests
+Though it is difficult to write automated tests for web applications, there are a few things we want to have tests for.  You should write tests for functionality that does not depend on users' actions.  One example is utility or helper functions on the front-end or back-end.
+
+Don't spend huge amounts of time writing tests, but they are useful to preemptively catch bugs and verify functionality in order to save time later.
+
+##### Update later with the testing library we're using.  Jest and Cypress are good options.
+
+## Regression Testing
+Whenever refactoring occurs, whether it be to improve existing functionality, or upgrade packages or whatever, it's important to retest what changed.  This will follow the regular testing process.
 
 ## Testing process
+A separate branch exists for testing.  The idea is that this prevents things from changing on a tester who is partway through testing a feature.  This prevents the introduction of bugs that testers might miss.
+
 1. Separate issues will be created for tests, referencing the issues that will be tested
 2. The person who is assigned this test issue (the tester) will indicate they have begun testing by moving their testing issue from "To do" to "In progress"
 3. The tester will read the acceptance criteria for the issue and check if each criteria is met
