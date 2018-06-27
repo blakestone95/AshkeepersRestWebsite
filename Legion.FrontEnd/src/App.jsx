@@ -1,34 +1,40 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 
 // Components
-import Home from 'Home';
 import NavBar from 'NavBar';
 
-import { ROUTE } from 'util/enums';
+import { PATHS } from 'util/paths';
 
 import 'style.less';
 
 export const history = createHistory();
 
-export default class App extends Component {
+export default class App extends PureComponent {
   render() {
+    const routes = Object.values(PATHS).map(pathObj => (
+      <Route
+        exact
+        path={pathObj.path}
+        component={pathObj.component}
+        key={pathObj.display}
+      />
+    ));
+
     return (
       <BrowserRouter>
         <div className="legion-body">
           <NavBar />
           <div className="legion-page-container">
             <div className="legion-sidebar-left" />
-            <Switch>
-              <Redirect exact from="/" to={ROUTE.home} />
+            <div className="legion-page-content">
+              <Switch>
+                <Redirect exact from="/" to={PATHS.Home.path} />
 
-              <Route exact path={ROUTE.home} component={Home} />
-              <Route exact path={ROUTE.tab2} component={Home} />
-              <Route exact path={ROUTE.tab3} component={Home} />
-              <Route exact path={ROUTE.tab4} component={Home} />
-              <Route exact path={ROUTE.tab5} component={Home} />
-            </Switch>
+                {routes}
+              </Switch>
+            </div>
             <div className="legion-sidebar-right" />
           </div>
         </div>

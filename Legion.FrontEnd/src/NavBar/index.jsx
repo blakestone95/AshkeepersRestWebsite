@@ -1,26 +1,23 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ROUTE } from 'util/enums';
+import { PATHS } from 'util/paths';
 
-class NavBar extends Component {
+class NavBar extends PureComponent {
   render() {
     return (
       <div className="legion-navbar">
-        <Link to={ROUTE.home} replace>
-          Home
+        <Link to={PATHS.Home.path} replace>
+          {PATHS.Home.display}
         </Link>
-        <Link to={ROUTE.tab2} replace>
-          Tab2
+        <Link to={PATHS.AnnouncementBoard.path} replace>
+          {PATHS.AnnouncementBoard.display}
         </Link>
-        <Link to={ROUTE.tab3} replace>
-          Tab3
+        <Link to={PATHS.EventsCalendar.path} replace>
+          {PATHS.EventsCalendar.display}
         </Link>
-        <Link to={ROUTE.tab4} replace>
-          Tab4
-        </Link>
-        <Link to={ROUTE.tab5} replace>
-          Tab5
+        <Link to={PATHS.CreateEvent.path} replace>
+          {PATHS.CreateEvent.display}
         </Link>
       </div>
     );

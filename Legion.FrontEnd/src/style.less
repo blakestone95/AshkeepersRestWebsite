@@ -1,54 +1,55 @@
 // Application wide styles go here
+@import '~variables.less';
 
 html {
-	height: 100%;
-	font-family: 'lato';
+  height: 100%;
+  font-family: 'lato';
 }
 
 body {
-	height: 100%;
-	margin: 0;
-	background-color: #111;
+  height: 100%;
+  margin: 0;
+  background-color: @app-background-color;
 }
 
 div {
-	display: block;
-	color: #fff;
+  display: block;
+  color: @app-text-color;
 }
 
 #app {
-	height: 100%;
+  height: 100%;
 }
 
 .legion-body {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
-	.legion-page-container {
-		height: 100%;
-		display: flex;
-		justify-content: space-between;
+  .legion-page-container {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
 
-		.legion-sidebar-left {
-			flex: 0 0 auto;
-			width: 20%;
-			height: 100%;
-			border-right: solid 1px #fff;
-		}
+    .legion-sidebar-left {
+      flex: 0 0 auto;
+      width: 20%;
+      height: 100%;
+    }
 
-		div {
-			width: 60%;
-			flex: 0 0 auto;
-		}
+    .legion-page-content {
+      flex: 1 0 auto;
+      height: 100%;
+      border-left: 1px solid @app-border-color;
+      border-right: 1px solid @app-border-color;
+    }
 
-		.legion-sidebar-right {
-			flex: 0 0 auto;
-			width: 20%;
-			height: 100%;
-			border-left: solid 1px #fff;
-		}
-	}
+    .legion-sidebar-right {
+      flex: 0 0 auto;
+      width: 20%;
+      height: 100%;
+    }
+  }
 }
 
 // Imports
