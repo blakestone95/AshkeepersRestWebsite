@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
-class AnnouncementBoard extends Component {
+class AnnouncementBoard extends PureComponent {
   render() {
     return <div>This is the Announcement Board page</div>;
   }

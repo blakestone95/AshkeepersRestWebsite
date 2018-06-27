@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { PATHS } from 'util/paths';
 
-class NavBar extends Component {
+class NavBar extends PureComponent {
   render() {
     return (
       <div className="legion-navbar">

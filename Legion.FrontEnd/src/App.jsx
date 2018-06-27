@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 
@@ -11,7 +11,7 @@ import 'style.less';
 
 export const history = createHistory();
 
-export default class App extends Component {
+export default class App extends PureComponent {
   render() {
     const routes = Object.values(PATHS).map(pathObj => (
       <Route

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
-class EventsCalendar extends Component {
+class EventsCalendar extends PureComponent {
   render() {
     return <div>This is the Events Calendar page</div>;
   }
