@@ -1,9 +1,18 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
+    /**
+     * Tables to clear before seeding.
+     *
+     * @var array
+     */
+    protected $toTruncate = ['users', 'announcements'];
+
     /**
      * Run the database seeds.
      *
@@ -11,6 +20,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        Model::unguard();
+
+        foreach($this->toTruncate as $table)
+            DB::table($table)->truncate();
+
+         $this->call([
+             UsersTableSeeder::class,
+             AnnouncementsTableSeeder::class
+         ]);
+
+         Model::reguard();
     }
 }
