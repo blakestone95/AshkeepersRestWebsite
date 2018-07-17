@@ -9,6 +9,6 @@ class AnnouncementsController extends Controller
 {
     public function index()
     {
-        return Announcement::all();
+        return ['Announcements' => Announcement::all()];
     }
 }
