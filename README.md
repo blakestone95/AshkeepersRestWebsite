@@ -53,6 +53,8 @@ It is assumed MySQL Server Community Edition Installer has already been download
 ## Running the Back End
 1. Make sure MySQL server is running
 2. Run `php artisan migrate` To scaffold any new database migrations (Do not have to do this on every run, but is a good idea after every pull)
+    - Note: If you get a PDOException::("could not find driver") error, make the following change in the php.ini file.
+    Change `;extension=pdo_mysql` to `extension=pdo_mysql`
 3. Run `php artisan serve`
     - Runs a local dev server
     - PHP supports live editing, so you do not have to restart the server for every change
