@@ -64,7 +64,7 @@ It is assumed MySQL Server Community Edition Installer has already been download
 1. Make sure MySQL server is running
 2. Run `php artisan migrate` To scaffold any new database migrations (Do not have to do this on every run, but is a good idea after every pull)
     - If you want to seed the database as well, add the --seed option
-    - If you get a PDO exeption at this point, it's because you probably don't have your php extensions configured correctly
+    - If you get a PDOException::("could not find driver") at this point, it's because you don't have your php extensions configured correctly
 3. Run `php artisan serve`
     - Runs a local dev server
     - PHP supports live editing, so you do not have to restart the server for every change
