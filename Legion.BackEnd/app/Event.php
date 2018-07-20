@@ -29,7 +29,7 @@ class Event extends Model
     ];
 
     /**
-     * Date fields in the database tha need to be formatted as such.
+     * Date fields in the database that need to be formatted as such.
      *
      * @var array
      */
