@@ -13,7 +13,7 @@ class EventTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function it_creates_an_announcement_by_a_user()
+    public function it_creates_an_event_by_a_user()
     {
         $user = factory(User::class)->create();
 
@@ -29,7 +29,7 @@ class EventTest extends TestCase
     }
 
     /** @test */
-    public function it_updates_an_announcement_by_user()
+    public function it_updates_an_event_by_user()
     {
         $originalUser = factory(User::class)->create();
         $modifyingUser = factory(User::class)->create();
