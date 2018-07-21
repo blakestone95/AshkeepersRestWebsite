@@ -18,3 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('announcements', ['uses' => 'AnnouncementsController@index']);
+
+Route::get('events', ['uses' => 'EventsController@index']);

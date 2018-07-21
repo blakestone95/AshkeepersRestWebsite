@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      *
      * @var array
      */
-    protected $toTruncate = ['users', 'announcements'];
+    protected $toTruncate = ['users', 'announcements', 'events'];
 
     /**
      * Run the database seeds.
@@ -27,7 +27,8 @@ class DatabaseSeeder extends Seeder
 
          $this->call([
              UsersTableSeeder::class,
-             AnnouncementsTableSeeder::class
+             AnnouncementsTableSeeder::class,
+             EventsTableSeeder::class
          ]);
 
          Model::reguard();
