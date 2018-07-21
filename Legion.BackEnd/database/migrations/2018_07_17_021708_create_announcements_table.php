@@ -16,7 +16,7 @@ class CreateAnnouncementsTable extends Migration
         Schema::create('announcements', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            // Will be able to store up to 64KiB a field with play TEXT field. Should be good enough.
+            // Will be able to store up to 64KiB a field with plain TEXT field. Should be good enough.
             // Can go up to 4 GiB if needed with LONGTEXT...
             $table->text('content');
             $table->unsignedInteger('user_id')->index();
