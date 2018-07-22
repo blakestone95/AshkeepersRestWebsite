@@ -1,10 +1,6 @@
 import React, { PureComponent } from 'react';
 
 class Home extends PureComponent {
-  testArrowFunc = () => {
-    return true;
-  }
-  
   render() {
     return <div>This is the Home page</div>;
   }
