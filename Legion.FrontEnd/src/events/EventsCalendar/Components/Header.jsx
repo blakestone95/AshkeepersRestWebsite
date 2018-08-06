@@ -1,30 +1,30 @@
 import React from 'react';
 import moment from 'moment';
+import ChevronLeftIcon from 'mdi-react/ChevronLeftIcon';
+import ChevronRightIcon from 'mdi-react/ChevronRightIcon';
 
 class Header extends React.PureComponent {
   state = {
     month: this.props.current,
-    date: this.props.selected
+  }
+  
+  previousMonth = (month) => {
+    this.setState({ month: month.subtract(1, 'M') })
   }
   
   nextMonth = (month) => {
-    this.setState({ month:this.state.month.add(1, 'M') })
+    this.setState({ month: month.add(1, 'M') })
   }
 
-  previousMonth = () => {
-    this.setState({ month:this.state.month.subtract(1, 'M') })
-  }
-
-  onDateClick = (selected) => {
-    this.setState({ date:selected })
-  }
-  
   render() {
+    const month = this.state.month
     return(
-      <div>
-        <div onClick={this.previousMonth()}>Previous</div>
-        <span>{this.state.month.format('MMMM YYYY')}</span>
-        <div onClick={this.nextMonth()}>Next</div>
+      <div className='header row flex-middle'>
+        <div><ChevronLeftIcon className='column column-end' onClick={this.previousMonth(month)} /></div>
+        <div className='column column-center'>
+          <span>{this.state.month.format('MMMM YYYY')}</span>
+        </div>
+        <div><ChevronRightIcon className='column column-end' onClick={this.nextMonth(month)} /></div>
       </div>
     )
   }

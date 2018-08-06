@@ -5,13 +5,13 @@ class DaysOfWeek extends React.PureComponent {
   listDays = () => {
     var names = []
     for (var i=0; i<7; i++) {
-      names.push(<span>{moment().day(i).format('ddd')}</span>)
+      names.push(<span className='column column-center' key={i}>{moment().day(i).format('ddd')}</span>)
     }
     return names
   }
   render() {
     return(
-      <div>{this.listDays()}</div>
+      <div className='days-of-week row'>{this.listDays()}</div>
     )
   }
 }

@@ -1,11 +1,5 @@
 /* VARIABLES */
-
-@main-color: #1a8fff;
-@text-color: #777;
-@text-color-light: #ccc;
-@border-color: #eee;
-@background-color: #f9f9f9;
-@neutral-color: #fff;
+@import '~variables.less';
 
 /* GENERAL STUFF */
 
@@ -21,43 +15,44 @@
   display: block;
   position: relative;
   width: 100%;
-  background: @neutral-color;
-  border: 1px solid @border-color;
+  background: @app-background-color;
+  border: 1px solid @cal-border-color;
   
   .header {
     text-transform: uppercase;
     font-weight: 700;
     font-size: 115%;
     padding: 1.5em 0%;
-    border-bottom: 1px solid @border-color;
+    border-bottom: 1px solid @cal-border-color;
   }
 
   .days-of-week {
     text-transform: uppercase;
     font-weight: 400;
-    color: @text-color-light;
+    color: @cal-text-color-light;
     font-size: 70%;
     padding: .75em 0%;
-    border-bottom: 1px solid @border-color;
+    border-bottom: 1px solid @cal-border-color;
   }
 
   .body {
     .cell {
       position: relative;
       height: 5em;
-      border-right: 1px solid @border-color;
+      border-right: 1px solid @cal-border-color;
       overflow: hidden;
       cursor: pointer;
-      background: @neutral-color;
+      background: @app-background-color;
       transition: .25s ease-out;
       
       :hover {
-        background: @background-color;
+        background: @app-background-color;
         transition: .5s ease-out;
         
         .background {
-          opacity: .05;
-          transition: 5s ease-in;
+          opacity: .2;
+          transition: .5s ease-in;
+          color: lightcoral;
         }
       }
 
@@ -71,16 +66,16 @@
       }
 
       .disabled {
-        color: @text-color-light;
+        color: @cal-text-color-light;
         pointer-events: none;
       }
 
       .background {
         font-weight: 700;
         line-height: 1;
-        color: @main-color;
+        color: @cal-main-color;
         opacity: 0;
-        font-size: 8em;
+        font-size: 4em;
         position: absolute;
         top: -.2em;
         right: -.05em;
@@ -90,7 +85,7 @@
     }
 
     .row {
-      border-bottom: 1px solid @border-color;
+      border-bottom: 1px solid @cal-border-color;
 
       :last-child {
         border-bottom: none;
@@ -99,15 +94,19 @@
 
     .selected {
       .background {
-        opacity: 0.05;
+        opacity: 0.4;
         transition: .5s ease-in;
       }
     }
 
     .column {
-      flex-grow: 0;
-      flex-basis: calc(100%/7);
-      width: calc(100%/7);
+      flex-grow: 1;
+      flex-basis: calc(98%/7);
+      width: calc(98%/7);
+
+      &:last-child {
+        border-right: none;
+      }
     }
   }
 }

@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import Calendar from './Components/Calendar';
+import './style.less'
 
 class EventsCalendar extends PureComponent {
   render() {
     return(
-      <div>
+      <div className='calendar'>
         <Calendar />
       </div>
     )

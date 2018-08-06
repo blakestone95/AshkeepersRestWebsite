@@ -4,18 +4,18 @@ import moment from 'moment';
 
 class Month extends React.PureComponent {
   state = {
-    month: this.props.month
+    month: this.props.month,
+    selected: this.props.selected
   }
 
   createWeeks = (month) => {
     var weeks = [],
         date = month.clone().startOf('month').startOf('week'),
-        nextMonth = date.clone().add(1, 'M'),
-        done = false;
-    while (!done) {
-      weeks.push(<span><Week date={date} /></span>)
+        // startDate = date.clone(),
+        endDate = date.clone().add(1, 'M');
+    while (date.isSameOrBefore(endDate, 'day')) {
+      weeks.push(<span className='body' key={date.date()}><Week month={date} selected={this.props.selected} /></span>)
       date = date.clone().add(1, 'w')
-      done = date.month() !== nextMonth.month()
     }
     
     return weeks

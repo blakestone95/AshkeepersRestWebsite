@@ -4,23 +4,30 @@ import moment from 'moment';
 
 class Week extends React.PureComponent {
   state = {
-    date: this.props.date,
+    month: this.props.month,
+    select: this.props.selected
   }
 
-  createDays = (date) => {
+  onDateClick = day => {
+    this.setState({
+      select: day
+    })
+  }
+
+  createDays = (date, selected) => {
     let days = []
-    date = date.clone()
+    let day = date.clone()
     for (var i=0; i<7; i++) {
-      days.push(<span><Day date={date} /></span>)
-      date = date.clone().add(1, 'd')
+      days.push(<span className={`column cell ${ !day.isSame(selected, 'month') ? 'disabled' : day.isSame(selected, 'day') ? 'selected' : ''}`} key={date.date()}><Day date={day} /></span>)
+      day = day.clone().add(1, 'd')
     }
     return days;
   }
 
   render() {    
     return(
-      <div>
-        {this.createDays(this.state.date)}
+      <div className='row'>
+        {this.createDays(this.state.month, this.state.select)}
       </div>
     )
   }

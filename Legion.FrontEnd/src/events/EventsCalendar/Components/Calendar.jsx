@@ -6,16 +6,18 @@ import moment from 'moment';
 
 class Calendar extends React.PureComponent {
   state = {
-    currentMonth: new moment,
-    selectedDate: new moment
+    currentMonth: new moment, // Currently viewed month
+    selectedDate: new moment  // User selected date
   }
 
   render() {
+    const { currentMonth, selectedDate } = this.state;
+
     return( 
       <div>
-        <Header current={this.state.currentMonth} selected={this.state.selectedDate} />
+        <Header current={currentMonth} />
         <DaysOfWeek />
-        <Month month={this.state.currentMonth}/>
+        <Month month={currentMonth} select={selectedDate} />
       </div>
     )
   }
