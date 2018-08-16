@@ -4,7 +4,7 @@ import './style.less'
 
 class EventsCalendar extends PureComponent {
   render() {
-    return(
+    return (
       <div className='calendar'>
         <Calendar />
       </div>

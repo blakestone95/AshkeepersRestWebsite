@@ -17,15 +17,15 @@ class Week extends React.PureComponent {
   createDays = (date, selected) => {
     let days = []
     let day = date.clone()
-    for (var i=0; i<7; i++) {
-      days.push(<span className={`column cell ${ !day.isSame(selected, 'month') ? 'disabled' : day.isSame(selected, 'day') ? 'selected' : ''}`} key={date.date()}><Day date={day} /></span>)
+    for (var i = 0; i < 7; i++) {
+      days.push(<span className={`column cell ${!day.isSame(selected, 'month') ? 'disabled' : day.isSame(selected, 'day') ? 'selected' : ''}`} key={date.date()}><Day date={day} /></span>)
       day = day.clone().add(1, 'd')
     }
     return days;
   }
 
-  render() {    
-    return(
+  render() {
+    return (
       <div className='row'>
         {this.createDays(this.state.month, this.state.select)}
       </div>

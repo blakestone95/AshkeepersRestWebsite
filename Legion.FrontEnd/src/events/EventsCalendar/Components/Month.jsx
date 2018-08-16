@@ -10,19 +10,19 @@ class Month extends React.PureComponent {
 
   createWeeks = (month) => {
     var weeks = [],
-        date = month.clone().startOf('month').startOf('week'),
-        // startDate = date.clone(),
-        endDate = date.clone().add(1, 'M');
+      date = month.clone().startOf('month').startOf('week'),
+      // startDate = date.clone(),
+      endDate = date.clone().add(1, 'M');
     while (date.isSameOrBefore(endDate, 'day')) {
       weeks.push(<span className='body' key={date.date()}><Week month={date} selected={this.props.selected} /></span>)
       date = date.clone().add(1, 'w')
     }
-    
+
     return weeks
   }
-  
+
   render() {
-    return(
+    return (
       <div>
         {this.createWeeks(this.state.month)}
       </div>

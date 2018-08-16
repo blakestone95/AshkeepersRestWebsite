@@ -13,7 +13,7 @@ class Calendar extends React.PureComponent {
   render() {
     const { currentMonth, selectedDate } = this.state;
 
-    return( 
+    return (
       <div>
         <Header current={currentMonth} />
         <DaysOfWeek />
