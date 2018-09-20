@@ -6,7 +6,7 @@ import { PATHS } from 'util/paths';
 class NavBar extends PureComponent {
   render() {
     return (
-      <div className="legion-navbar">
+      <div className="ash-navbar">
         <Link to={PATHS.Home.path} replace>
           {PATHS.Home.display}
         </Link>
