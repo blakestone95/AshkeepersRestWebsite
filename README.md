@@ -1,4 +1,4 @@
-# 73rd Legion Website
+# Ashkeeper's Rest Website
 
 A Website project for me and my friends.  We want to build a website for our community of friends and
 learn JS, React, Redux, etc. along the way.
@@ -14,7 +14,7 @@ A note about IDE's: Use whatever you want, but if you're not sure what to choose
 
 ## Front End Setup
 Must be done for each new setup
-1. In a terminal (CMD, Powershell, or a Unix terminal emulator), navigate to the Legion.FrontEnd directory
+1. In a terminal (CMD, Powershell, or a Unix terminal emulator), navigate to the Ash.FrontEnd directory
     - Note: Opening a VS Code window to this folder will start a Powershell terminal there too (default terminal is powershell, this is configurable)
 2. Run `npm install` to install Node dependencies
     - Dependencies stored in `node_modules` folder in the same directory where the command is run
@@ -38,11 +38,11 @@ It is assumed MySQL Server Community Edition Installer has already been download
 8. Keep going using default settings until the finish.
 9. Installation should now be finished.
 10. Open up a MySQL Command Line Client, type in the root password, and enter in the following command
-    `CREATE DATABASE 73rdlegionwebsite;`
+    `CREATE DATABASE ashkeepersrestwebsite;`
 
 
 ### Setup Laravel
-1. In a terminal (CMD, Powershell, or a Unix terminal), navigate to the Legion.BackEnd directory
+1. In a terminal (CMD, Powershell, or a Unix terminal), navigate to the Ash.BackEnd directory
     - Note: Opening a VS Code window to this folder will start a Powershell terminal there too (default terminal is powershell, this is configurable)
 2. Copy `.env.example` file to `.env`
     - This is local and will not be committed to the repo
