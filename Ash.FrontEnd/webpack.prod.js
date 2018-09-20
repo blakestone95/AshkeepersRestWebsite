@@ -11,15 +11,15 @@ module.exports = merge(common, {
 	mode: 'production',
 	output: {
 		filename: '[name].bundle.js',
-		path: path.resolve('../Legion.Backend/public/js'),
+		path: path.resolve('../Ash.Backend/public/js'),
 		publicPath: '/js/'
 	},
 	devtool: 'source-map',
 	plugins: [
 		new CleanWebpackPlugin(
 			[
-				path.resolve('../Legion.Backend/public/js'),
-				path.resolve('../Legion.Backend/resources/views')
+				path.resolve('../Ash.Backend/public/js'),
+				path.resolve('../Ash.Backend/resources/views')
 			],
 			{
 				root: path.resolve('../')
@@ -27,7 +27,7 @@ module.exports = merge(common, {
 		),
 		new HtmlWebpackPlugin({
 			filename: path.resolve(
-				'../Legion.Backend/resources/views/index.blade.php'
+				'../Ash.Backend/resources/views/index.blade.php'
 			),
 			favicon: path.resolve('./assets/images/favicon.ico'),
 			template: path.resolve('./index.html')

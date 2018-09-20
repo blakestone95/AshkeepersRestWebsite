@@ -24,18 +24,18 @@ export default class App extends PureComponent {
 
     return (
       <BrowserRouter>
-        <div className="legion-body">
+        <div className="ash-body">
           <NavBar />
-          <div className="legion-page-container">
-            <div className="legion-sidebar-left" />
-            <div className="legion-page-content">
+          <div className="ash-page-container">
+            <div className="ash-sidebar-left" />
+            <div className="ash-page-content">
               <Switch>
                 <Redirect exact from="/" to={PATHS.Home.path} />
 
                 {routes}
               </Switch>
             </div>
-            <div className="legion-sidebar-right" />
+            <div className="ash-sidebar-right" />
           </div>
         </div>
       </BrowserRouter>
