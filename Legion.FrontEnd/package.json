@@ -1,7 +1,7 @@
 {
-  "name": "73rdlegionwebsite",
+  "name": "ashkeepers-rest-website",
   "version": "0.0.0",
-  "description": "Webapp for the 73rd Legion gaming community.  Intended to supplement the interactions within our Discord guild and provide services which Discord does not.  Actual features will be defined and built as we come up with more ideas.",
+  "description": "Webapp for the Ashkeeper's Rest gaming community.  Intended to supplement the interactions within our Discord guild and provide services which Discord does not.  Actual features will be defined and built as we come up with more ideas.",
   "author": "",
   "license": "ISC",
   "keywords": [
@@ -17,12 +17,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/blakestone95/73rdLegionWebsite.git"
+    "url": "git+https://github.com/blakestone95/AshkeepersRestWebsite.git"
   },
   "bugs": {
-    "url": "https://github.com/blakestone95/73rdLegionWebsite/issues"
+    "url": "https://github.com/blakestone95/AshkeepersRestWebsite/issues"
   },
-  "homepage": "https://github.com/blakestone95/73rdLegionWebsite#readme",
+  "homepage": "https://github.com/blakestone95/AshkeepersRestWebsite#readme",
   "babel": {
     "presets": [
       [
