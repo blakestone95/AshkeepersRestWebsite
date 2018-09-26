@@ -1,25 +1,45 @@
-import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 import { PATHS } from 'util/paths';
 
-class NavBar extends PureComponent {
+class NavBar extends React.Component {
   render() {
     return (
-      <div className="ash-navbar">
-        <Link to={PATHS.Home.path} replace>
+      <header className="ash-navbar">
+        <NavLink
+          replace
+          to={PATHS.Home.path}
+          className="ash-tab"
+          activeClassName="ash-selected"
+        >
           {PATHS.Home.display}
-        </Link>
-        <Link to={PATHS.AnnouncementBoard.path} replace>
+        </NavLink>
+        <NavLink
+          replace
+          to={PATHS.AnnouncementBoard.path}
+          className="ash-tab"
+          activeClassName="ash-selected"
+        >
           {PATHS.AnnouncementBoard.display}
-        </Link>
-        <Link to={PATHS.EventsCalendar.path} replace>
+        </NavLink>
+        <NavLink
+          replace
+          to={PATHS.EventsCalendar.path}
+          className="ash-tab"
+          activeClassName="ash-selected"
+        >
           {PATHS.EventsCalendar.display}
-        </Link>
-        <Link to={PATHS.CreateEvent.path} replace>
+        </NavLink>
+        <NavLink
+          replace
+          to={PATHS.CreateEvent.path}
+          className="ash-tab"
+          activeClassName="ash-selected"
+        >
           {PATHS.CreateEvent.display}
-        </Link>
-      </div>
+        </NavLink>
+      </header>
     );
   }
 }

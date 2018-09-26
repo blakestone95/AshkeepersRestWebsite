@@ -4,22 +4,28 @@
 // TODO: Flesh out styles
 .ash-navbar {
   height: 50px;
-  border-bottom: solid 1px @app-border-color;
-  padding-left: 20%;
+  margin-left: 10%;
+  padding-left: 1%;
   display: flex;
   align-items: flex-end;
 
-  a {
+  .ash-tab {
     margin-right: 10px;
     padding: 5px;
+    border-radius: 5px 5px 0 0;
     border-left: solid 1px @app-border-color;
     border-top: solid 1px @app-border-color;
     border-right: solid 1px @app-border-color;
     color: @app-text-color;
     text-decoration: none;
 
-    &:hover {
-      background-color: #444;
+    &:hover,
+    &.ash-selected:hover {
+      background-color: @app-hover-color;
+    }
+
+    &.ash-selected {
+      background-color: @app-hover-color;
     }
   }
 }
