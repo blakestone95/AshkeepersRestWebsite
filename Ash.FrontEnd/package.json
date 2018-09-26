@@ -11,9 +11,9 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.prod.js",
-    "watch": "webpack-dev-server --color --progress --config webpack.dev.js"
+    "watch": "webpack-dev-server --color --progress --config webpack.dev.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -43,6 +43,22 @@
       "transform-class-properties"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{json,css,less,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "dependencies": {
     "history": "^4.7.2",
     "react": "^16.4.1",
@@ -68,9 +84,12 @@
     "eslint-plugin-react": "^7.10.0",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
+    "husky": "^1.0.0",
     "less": "^3.7.1",
     "less-loader": "^4.1.0",
+    "lint-staged": "^7.3.0",
     "path-to-regexp": "^2.4.0",
+    "prettier": "^1.14.3",
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^4.16.1",
