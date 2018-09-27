@@ -42,17 +42,18 @@ div {
 .ash-divider {
   position: fixed;
   top: @header-height;
-  left: 10%;
-  width: 80%;
+  left: @left-gutter-width;
+  width: calc(90vw - @left-gutter-width);
   height: @divider-height;
-  margin: 0 auto;
+  margin: 0;
   border: none;
   background-color: @app-border-color;
 }
 
 .ash-main {
-  width: 80%;
-  margin: calc(@header-height + @divider-height) auto 0 auto;
+  width: calc(90vw - @left-gutter-width);
+  margin-top: calc(@header-height + @divider-height);
+  margin-left: @left-gutter-width;
 }
 
 // Imports

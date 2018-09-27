@@ -1,30 +1,28 @@
 // Navigation Bar styles
 @import '~variables.less';
 
-// TODO: Flesh out styles
 .ash-navbar {
   height: 50px;
-  margin-left: 10%;
+  width: calc(90% - @left-gutter-width);
+  margin-left: @left-gutter-width;
   padding-left: 1%;
   display: flex;
   align-items: flex-end;
 
   .ash-tab {
-    margin-right: 10px;
-    padding: 5px;
+    padding: 5px 10px;
     border-radius: 5px 5px 0 0;
-    border-left: solid 1px @app-border-color;
-    border-top: solid 1px @app-border-color;
-    border-right: solid 1px @app-border-color;
     color: @app-text-color;
     text-decoration: none;
+    // Makes sure the border width is accounted for an prevents shifting elements around
+    border-left: solid 1px transparent;
+    border-top: solid 1px transparent;
+    border-right: solid 1px transparent;
 
     &:hover,
+    &.ash-selected,
     &.ash-selected:hover {
-      background-color: @app-hover-color;
-    }
-
-    &.ash-selected {
+      border-color: @app-border-color;
       background-color: @app-hover-color;
     }
   }
