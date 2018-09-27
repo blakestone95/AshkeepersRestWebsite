@@ -13,7 +13,7 @@ class NavBar extends React.Component {
           className="ash-tab"
           activeClassName="ash-selected"
         >
-          {PATHS.Home.display}
+          Home
         </NavLink>
         <NavLink
           replace
@@ -21,7 +21,7 @@ class NavBar extends React.Component {
           className="ash-tab"
           activeClassName="ash-selected"
         >
-          {PATHS.AnnouncementBoard.display}
+          Announcements
         </NavLink>
         <NavLink
           replace
@@ -29,15 +29,7 @@ class NavBar extends React.Component {
           className="ash-tab"
           activeClassName="ash-selected"
         >
-          {PATHS.EventsCalendar.display}
-        </NavLink>
-        <NavLink
-          replace
-          to={PATHS.CreateEvent.path}
-          className="ash-tab"
-          activeClassName="ash-selected"
-        >
-          {PATHS.CreateEvent.display}
+          Events
         </NavLink>
       </header>
     );

@@ -2,6 +2,7 @@ import Home from 'Home';
 import AnnouncementBoard from 'announcements/AnnouncementBoard';
 import CreateAnnouncement from 'announcements/CreateAnnouncement';
 import ViewAnnouncement from 'announcements/ViewAnnouncement';
+import EventsBoard from 'events/EventsBoard';
 import EventsCalendar from 'events/EventsCalendar';
 import CreateEvent from 'events/CreateEvent';
 import ViewEvent from 'events/ViewEvent';
@@ -13,7 +14,7 @@ export const PATHS = {
     display: 'Home',
   },
   AnnouncementBoard: {
-    path: '/Announcements/Board',
+    path: '/Announcements',
     component: AnnouncementBoard,
     display: 'Announcements Board',
   },
@@ -26,6 +27,11 @@ export const PATHS = {
     path: '/Announcements/View',
     component: ViewAnnouncement,
     display: 'View Announcement',
+  },
+  EventsBoard: {
+    path: '/Events',
+    component: EventsBoard,
+    display: 'Events Board',
   },
   EventsCalendar: {
     path: '/Events/Calendar',
