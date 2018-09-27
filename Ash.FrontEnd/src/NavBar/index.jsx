@@ -7,6 +7,7 @@ class NavBar extends React.Component {
   render() {
     return (
       <header className="ash-navbar">
+        <div className="ash-logo">{'Logo\n150px x 150px'}</div>
         <NavLink
           replace
           to={PATHS.Home.path}
