@@ -5,8 +5,7 @@ class Home extends PureComponent {
   render() {
     return (
       <div>
-        This is the Home page
-        <SectionTile title="Section Title" text="Text Text Text" />
+        <SectionTile title="Welcome!" text="Welcome to Ashkeepers Rest" />
       </div>
     );
   }
