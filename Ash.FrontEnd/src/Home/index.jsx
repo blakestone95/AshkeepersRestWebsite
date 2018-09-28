@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import SectionTile from 'global/SectionTile';
+import { SectionTile } from 'global/components';
 
 class Home extends PureComponent {
   render() {
