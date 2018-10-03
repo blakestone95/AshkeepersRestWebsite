@@ -1,8 +1,13 @@
 import React, { PureComponent } from 'react';
+import { SectionTile } from 'global/components';
 
 class Home extends PureComponent {
   render() {
-    return <div>This is the Home page</div>;
+    return (
+      <div>
+        <SectionTile title="Welcome!" text="Welcome to Ashkeepers Rest" />
+      </div>
+    );
   }
 }
 
