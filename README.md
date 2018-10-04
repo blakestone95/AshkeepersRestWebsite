@@ -12,6 +12,9 @@ learn JS, React, Redux, etc. along the way.
 
 A note about IDE's: Use whatever you want, but if you're not sure what to choose, consider [Visual Studio Code](https://code.visualstudio.com/) (VS Code).  This is a fancy text editor that supports a rich development experience for JavaScript while still trying to be as lightweight as possible.  While it doesn't need any plugins to be useful right out of the box, there are quite a few very useful ones out there.  A later section will cover some VS Code setup.
 
+## Optional
+- [Yarn](https://yarnpkg.com/en/) - Alternate to NPM
+
 ## Front End Setup
 Must be done for each new setup
 1. In a terminal (CMD, Powershell, or a Unix terminal emulator), navigate to the Ash.FrontEnd directory
@@ -20,7 +23,7 @@ Must be done for each new setup
     - Dependencies stored in `node_modules` folder in the same directory where the command is run
 
 ## Running the Front End
-1. Run `npm run dev` to start up the dev environment 
+1. Run `npm run watch` to start up the dev environment
     - Runs webpack-dev-server
     - Watches for changes in its files and updates whenever it detects one
 
