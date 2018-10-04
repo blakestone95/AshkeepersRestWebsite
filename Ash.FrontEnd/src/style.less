@@ -52,8 +52,9 @@ div {
 
 .ash-main {
   width: calc(90vw - @left-gutter-width);
-  margin-top: calc(@header-height + @divider-height);
-  margin-left: @left-gutter-width;
+  position: absolute;
+  top: calc(@header-height + @divider-height);
+  left: @left-gutter-width;
 }
 
 // Imports
