@@ -8,6 +8,8 @@
   padding-left: 1%;
   display: flex;
   align-items: flex-end;
+  background-color: @app-background-color; // Non-transparent background so that tiles that scroll behind it are hidden
+  z-index: 10; // bring in front of main
 
   .ash-logo {
     position: fixed;
