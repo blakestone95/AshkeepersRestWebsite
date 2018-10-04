@@ -14,7 +14,7 @@ class Week extends React.PureComponent {
   createDays = (date, selected) => {
     let days = [];
     let day = date.clone();
-    for (var i = 0; i < 7; i++) {
+    for (let i = 0; i < 7; i++) {
       days.push(
         <span
           className={`column cell ${
@@ -24,7 +24,7 @@ class Week extends React.PureComponent {
                 ? 'selected'
                 : ''
           }`}
-          key={date.date()}
+          key={date.date() + i}
         >
           <Day date={day} />
         </span>

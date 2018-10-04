@@ -12,7 +12,7 @@ class Calendar extends React.PureComponent {
   render() {
     const { currentMonth, selectedDate } = this.state;
     return (
-      <div>
+      <div className="calendar">
         <Header current={currentMonth} />
         <DaysOfWeek />
         <Month month={currentMonth} select={selectedDate} />

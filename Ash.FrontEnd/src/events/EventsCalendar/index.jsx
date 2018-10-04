@@ -1,9 +1,10 @@
-import React, { PureComponent } from 'react';
+import Calendar from './Calendar';
+import Day from './Day';
+import DaysOfWeek from './DaysOfWeek';
+import Header from './Header';
+import Month from './Month';
+import Week from './Week';
 
-class EventsCalendar extends PureComponent {
-  render() {
-    return <div>This is the Events Calendar page</div>;
-  }
-}
+export { Calendar, Day, DaysOfWeek, Header, Month, Week };
 
-export default EventsCalendar;
+export default Calendar;
