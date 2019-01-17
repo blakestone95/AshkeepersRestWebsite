@@ -24,7 +24,7 @@ class Header extends React.PureComponent {
           />
         </div>
         <div className="column column-center">
-          <span>{this.state.month.format('MMMM YYYY')}</span>
+          <span>{month.format('MMMM YYYY')}</span>
         </div>
         <div>
           <ChevronRightIcon
