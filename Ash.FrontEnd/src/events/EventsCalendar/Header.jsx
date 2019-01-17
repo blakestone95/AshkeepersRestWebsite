@@ -14,7 +14,7 @@ class Header extends React.PureComponent {
     this.setState({ month: month.add(1, 'M') });
   };
   render() {
-    const month = this.state.month;
+    const { month } = this.state;
     return (
       <div className="header row flex-middle">
         <div>
