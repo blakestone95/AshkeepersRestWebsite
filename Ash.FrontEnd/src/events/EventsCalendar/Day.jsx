@@ -1,5 +1,26 @@
 import React from 'react';
 import moment from 'moment';
+import CalendarEvent from './CalendarEvent';
+
+const FakeData = [
+  {
+    id: 'I',
+    title: 'I',
+    game: '',
+    content: '',
+    start: '',
+    end: '',
+  },
+  {
+    id: 'Am',
+    title: 'Am',
+    game: '',
+    content: '',
+    start: '',
+    end: '',
+  },
+];
+
 class Day extends React.PureComponent {
   state = {
     date: this.props.date,
@@ -18,6 +39,9 @@ class Day extends React.PureComponent {
       <div>
         <span className="number">{formattedDate}</span>
         <span className="background">{formattedDate}</span>
+        {FakeData.map(event => (
+          <CalendarEvent key={event.id} data={event} />
+        ))}
       </div>
     );
   }

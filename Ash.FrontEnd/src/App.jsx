@@ -15,7 +15,7 @@ export default class App extends React.PureComponent {
     const routes = Object.values(PATHS).map(pathObj => (
       <Route
         exact
-        path={pathObj.path}
+        path={pathObj.path + (pathObj.params ? pathObj.params : '')}
         component={pathObj.component}
         key={pathObj.display}
       />
