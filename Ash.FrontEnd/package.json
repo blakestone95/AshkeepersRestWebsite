@@ -41,9 +41,10 @@
     ]
   },
   "dependencies": {
-    "@mdi/font": "^2.5.94",
+    "@mdi/font": "3.3.92",
     "history": "4.7.2",
-    "mdi-react": "^4.0.0",
+    "mdi-react": "5.2.0",
+    "moment": "2.23.0",
     "react": "16.7.0",
     "react-dom": "16.7.0",
     "react-router-dom": "4.3.1"
