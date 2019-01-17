@@ -45,6 +45,7 @@ export const PATHS = {
   },
   ViewEvent: {
     path: '/Events/View',
+    params: '/:eventId',
     component: ViewEvent,
     display: 'View Event',
   },

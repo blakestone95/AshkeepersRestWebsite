@@ -42,6 +42,17 @@ It is assumed MySQL Server Community Edition Installer has already been download
 9. Installation should now be finished.
 10. Open up a MySQL Command Line Client, type in the root password, and enter in the following command
     `CREATE DATABASE ashkeepersrestwebsite;`
+    
+### Setup PHP
+1. Go to your php installation directory, and copy/paste the php.ini-development as php.ini in the same folder.
+2. Open the php.ini file and change any settings you want to change in there.
+3. The following extensions should be enabled at the very least (if on windows):
+    - php_mbstring.dll
+    - php_openssl.dll
+    - php_pdo_mysql.dll
+    - php_curl.dll
+    - php_fileinfo.dll
+4. If on linux, the extensions can be installed through the package manager.
 
 
 ### Setup Laravel
@@ -56,6 +67,8 @@ It is assumed MySQL Server Community Edition Installer has already been download
 ## Running the Back End
 1. Make sure MySQL server is running
 2. Run `php artisan migrate` To scaffold any new database migrations (Do not have to do this on every run, but is a good idea after every pull)
+    - If you want to seed the database as well, add the --seed option
+    - If you get a PDOException::("could not find driver") at this point, it's because you don't have your php extensions configured correctly
 3. Run `php artisan serve`
     - Runs a local dev server
     - PHP supports live editing, so you do not have to restart the server for every change
