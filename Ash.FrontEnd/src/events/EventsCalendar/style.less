@@ -1,4 +1,4 @@
-.calendar {
+.ash-calendar {
   display: block;
   position: relative;
   width: 100%;
@@ -20,6 +20,23 @@
     padding: 0.75em 0%;
     border-bottom: 1px solid @cal-border-color;
   }
+
+  .calendar-event {
+    display: block;
+    position: relative;
+    z-index: 1;
+
+    background: @app-foreground-color;
+    color: white;
+    border-radius: 10px;
+    margin: 4px 24px 4px 4px;
+
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+    text-decoration: none;
+  }
+
   .body {
     .cell {
       position: relative;
@@ -35,7 +52,7 @@
         transition: 0.5s ease-out;
 
         .background {
-          opacity: 0.2;
+          opacity: 0.1;
           transition: 0.5s ease-in;
           color: lightcoral;
         }
@@ -73,7 +90,7 @@
     }
     .selected {
       .background {
-        opacity: 0.4;
+        opacity: 0.1;
         transition: 0.5s ease-in;
       }
     }
