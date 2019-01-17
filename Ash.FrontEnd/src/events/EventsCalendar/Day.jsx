@@ -7,7 +7,7 @@ class Day extends React.PureComponent {
   render() {
     const { date } = this.state;
     let formattedDate = date.clone().format('D');
-    var day = {
+    const day = {
       name: date.format('ddd'),
       number: date.date(),
       date: date,
