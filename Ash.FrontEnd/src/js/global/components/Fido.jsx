@@ -13,10 +13,10 @@ fetchItems = {
 /**
  * Fetch configuration object default object shape
  * @prop {string} path - fetch url
- * @prop {Object} query - object containing query string key-value pairs
- * @prop {Object} payload - json payload for request
+ * @prop {object} query - object containing query string key-value pairs
+ * @prop {object} payload - json payload for request
  * @prop {AbortController} abortSignal - for aborting the request
- * @prop {Object} options - other options [optional]
+ * @prop {object} options - other options [optional]
  * @prop {string} options.method - HTTP method type (case-insensitive) [optional]
  * @prop {boolean} options.callOnMount - flag for whether the fetch should be
  *    performed on mount [optional]
@@ -37,8 +37,8 @@ const defaultFetchConfig = {
 
 /**
  * Generate configurations for the supplied fetches
- * @param {Object} fetchItems - Object containing named config objects
- * @returns {Object} Named config objects composed of the default config
+ * @param {object} fetchItems - Object containing named config objects
+ * @returns {object} Named config objects composed of the default config
  *    above, the supplied config object, and a new AbortController
  */
 function createFetchConfigs(fetchItems) {
@@ -55,9 +55,9 @@ function createFetchConfigs(fetchItems) {
  * @prop {boolean} inFlight - is the request awaiting a reply?
  * @prop {boolean} success - did we receive a good reply from the server?
  * @prop {boolean} fail - did the request fail or did the server return a bad response?
- * @prop {Object} data - response payload of the successful request
- * @prop {Object} prevData - response payload of the previous successful request
- * @prop {Object} error - js error object
+ * @prop {object} data - response payload of the successful request
+ * @prop {object} prevData - response payload of the previous successful request
+ * @prop {object} error - js error object
  * @prop {Function} call - function to initiate a fetch
  */
 const initialFetchState = {
@@ -72,10 +72,10 @@ const initialFetchState = {
 
 /**
  * Generate fetch state objects
- * @param {Object} fetchItems - Object containing named config objects
- * @param {Object} configs - generated fetch configuration objects
- * @param {Object} callFunc - "call" function
- * @returns {Object} Fetch config objects, keyed by config name, composed of
+ * @param {object} fetchItems - Object containing named config objects
+ * @param {object} configs - generated fetch configuration objects
+ * @param {object} callFunc - "call" function
+ * @returns {object} Fetch config objects, keyed by config name, composed of
  *    the default state above and the "call" function
  */
 function createInitFetchState(fetchItems, callFunc) {
@@ -121,6 +121,12 @@ class Fido extends React.Component {
     }
   }
 
+  /**
+   * Call method for initiating a fetch
+   * @param {string} key - fetch item key
+   * @returns {(configOverride: object) => void} accepts immediate overrides to the
+   *    config object and calls the dispatch method
+   */
   onCall = key => configOverride => {
     const { configs } = this.state;
 
@@ -128,9 +134,15 @@ class Fido extends React.Component {
     if (configOverride) {
       newConfig = { ...config, ...configOverride };
     }
+
     this.dispatch(key, newConfig);
   };
 
+  /**
+   * Initiate a fetch with a given configuration
+   * @param {string} key - fetch item key
+   * @param {object} config - fetch item configuration
+   */
   dispatch = (key, config) => {
     const { fetchState } = this.state;
     const method = config.options.method.toUpperCase();
@@ -180,6 +192,10 @@ class Fido extends React.Component {
     });
   };
 
+  /**
+   * Preprocess fetch response
+   * @param {object} response - fetch response
+   */
   static processResponse(response) {
     if (!response.ok) throw new Error('No success. Such bad response.');
 
@@ -191,6 +207,11 @@ class Fido extends React.Component {
     throw new TypeError('Response not JSON. Very annoy.');
   }
 
+  /**
+   * Handle successful fetch
+   * @param {string} key - fetch item key
+   * @returns {(json: object) => void}
+   */
   setData = key => json => {
     this.setFetchState({
       [key]: {
@@ -204,6 +225,11 @@ class Fido extends React.Component {
     });
   };
 
+  /**
+   * Handle fetch failure
+   * @param {string} key - fetch item key
+   * @returns {(error: object) => void}
+   */
   onFailure = key => error => {
     this.setFetchState({
       [key]: {
@@ -221,7 +247,7 @@ class Fido extends React.Component {
 
   /**
    * Update the fetchState object in state
-   * @param {Object} newFetchStateObj - object defining the new part of fetchState
+   * @param {object} newFetchStateObj - object defining the new part of fetchState
    */
   setFetchState = newFetchStateObj => {
     const newFetchState = { ...this.state.fetchState };
