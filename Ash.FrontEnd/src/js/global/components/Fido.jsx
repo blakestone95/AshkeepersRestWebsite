@@ -146,17 +146,8 @@ class Fido extends React.Component {
       // keepalive
       signal: config.abortSignal,
     })
-      .then(response => {
-        if (!response.ok) throw new Error('No success. Such bad response.');
-
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          return response.json();
-        }
-
-        throw new TypeError('Response not JSON. Very annoy.');
-      })
-      .then(this.processResponse(key))
+      .then(Fido.processResponse)
+      .then(this.setData(key))
       .catch(this.onFailure(key));
 
     // Update fetch state
@@ -177,7 +168,18 @@ class Fido extends React.Component {
     });
   };
 
-  processResponse = key => json => {
+  static processResponse(response) {
+    if (!response.ok) throw new Error('No success. Such bad response.');
+
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      return response.json();
+    }
+
+    throw new TypeError('Response not JSON. Very annoy.');
+  }
+
+  setData = key => json => {
     this.setState({
       [key]: {
         inFlight: false,
