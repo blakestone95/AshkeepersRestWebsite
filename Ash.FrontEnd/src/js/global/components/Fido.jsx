@@ -38,9 +38,8 @@ const defaultFetchConfig = {
 /**
  * Generate configurations for the supplied fetches
  * @param {Object} fetchItems - Object containing named config objects
- * @returns {Object} Fully initialized named config objects composed of
- *    the default config above, the supplied config object, and a new
- *    AbortController
+ * @returns {Object} Named config objects composed of the default config
+ *    above, the supplied config object, and a new AbortController
  */
 function createFetchConfigs(fetchItems) {
   return Object.entries(fetchItems).reduce((configs, [key, config]) => {
@@ -79,11 +78,11 @@ const initialFetchState = {
  * @returns {Object} Fetch config objects, keyed by config name, composed of
  *    the default state above and the "call" function
  */
-function createInitFetchState(fetchItems, configs, callFunc) {
+function createInitFetchState(fetchItems, callFunc) {
   return Object.keys(fetchItems).reduce((initState, key) => {
     initState[key] = {
       ...initialFetchState,
-      call: callFunc(key, configs[key]),
+      call: callFunc(key),
     };
 
     return initState;
@@ -97,23 +96,35 @@ class Fido extends React.Component {
     super(props);
 
     const { fetchItems } = props;
-    const configs = createFetchConfigs(fetchItems);
-
-    this.configs = configs;
-    this.state = createInitFetchState(fetchItems, configs, this.onCall);
+    this.state = {
+      fetchState: createInitFetchState(fetchItems, this.onCall),
+      configs: createFetchConfigs(fetchItems),
+    };
   }
 
   componentDidMount() {
+    const { configs } = this.state;
+
     // Call any fetch items with the callOnMount option set
-    Object.entries(this.configs).forEach(([key, config]) => {
+    Object.entries(configs).forEach(([key, config]) => {
       if (config.options.callOnMount) {
         this.dispatch(key, config);
       }
     });
   }
 
-  onCall = (key, config) => configOverride => {
-    let newConfig = config;
+  componentDidUpdate(prevProps) {
+    const { fetchItems } = this.props;
+
+    if (fetchItems !== prevProps.fetchItems) {
+      this.setState({ configs: createFetchConfigs(fetchItems) });
+    }
+  }
+
+  onCall = key => configOverride => {
+    const { configs } = this.state;
+
+    let newConfig = configs[key];
     if (configOverride) {
       newConfig = { ...config, ...configOverride };
     }
@@ -121,6 +132,7 @@ class Fido extends React.Component {
   };
 
   dispatch = (key, config) => {
+    const { fetchState } = this.state;
     const method = config.options.method.toUpperCase();
 
     let body = null;
@@ -153,10 +165,10 @@ class Fido extends React.Component {
     // Update fetch state
     let prevData = null;
     if (config.options.preserveData) {
-      prevData = this.state[key].data;
+      prevData = fetchState[key].data;
     }
 
-    this.setState({
+    this.setFetchState({
       [key]: {
         inFlight: true,
         success: false,
@@ -180,7 +192,7 @@ class Fido extends React.Component {
   }
 
   setData = key => json => {
-    this.setState({
+    this.setFetchState({
       [key]: {
         inFlight: false,
         success: true,
@@ -193,7 +205,7 @@ class Fido extends React.Component {
   };
 
   onFailure = key => error => {
-    this.setState({
+    this.setFetchState({
       [key]: {
         inFlight: false,
         success: false,
@@ -207,11 +219,24 @@ class Fido extends React.Component {
     throw new Error('No success. Cannot fetch. So Network error.');
   };
 
+  /**
+   * Update the fetchState object in state
+   * @param {Object} newFetchStateObj - object defining the new part of fetchState
+   */
+  setFetchState = newFetchStateObj => {
+    const newFetchState = { ...this.state.fetchState };
+    Object.entries(newFetchStateObj).forEach(([key, value]) => {
+      newFetchState[key] = value;
+    });
+
+    this.setState({ fetchState: newFetchState });
+  };
+
   render() {
     const { render } = this.props;
-    const { ...fetches } = this.state;
+    const { fetchState } = this.state;
 
-    return render(fetches);
+    return render(fetchState);
   }
 }
 
