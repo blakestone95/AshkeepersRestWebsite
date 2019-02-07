@@ -74,7 +74,6 @@ function createInitFetchState(fetchItems, callFunc) {
   }, {});
 }
 
-// TODO: implement request aborting
 /**
  * Fetch React Component for retrieving data from a server using the *fetch* API
  * Follows the render props pattern for wrapping children
@@ -88,6 +87,7 @@ class Fido extends React.Component {
 
     const { fetchItems } = props;
     this.state = createInitFetchState(fetchItems, this.onCall);
+    this.aborts = {};
   }
 
   componentDidMount() {
@@ -169,7 +169,7 @@ class Fido extends React.Component {
    */
   dispatch = (key, config) => {
     const method = config.options.method.toUpperCase();
-    const abortSignal = new AbortController();
+    const abortController = new AbortController();
 
     let body = null;
     if (method !== 'GET' && method !== 'HEAD') {
@@ -178,6 +178,11 @@ class Fido extends React.Component {
 
     let headers = new Headers();
     if (body) headers.append('Content-Type', 'application/json');
+
+    // Abort previous fetch if there is any
+    if (this.aborts[key]) this.aborts[key].abort();
+    // Replace previously aborted (or new) AbortController
+    this.aborts[key] = abortController;
 
     // TODO: implement query stringify for fetch url
     fetch(config.path, {
@@ -192,7 +197,7 @@ class Fido extends React.Component {
       referrerPolicy: 'no-referrer-when-downgrade', // default
       // integrity
       // keepalive
-      signal: abortSignal,
+      signal: abortController.signal,
     })
       .then(Fido.processResponse)
       .then(this.setData(key))
@@ -255,6 +260,11 @@ class Fido extends React.Component {
    * @returns {(error: object) => void}
    */
   onFailure = key => error => {
+    // Ignore aborted fetches (don't change state)
+    if (error instanceof AbortError) {
+      return;
+    }
+
     this.setState({
       [key]: {
         inFlight: false,
