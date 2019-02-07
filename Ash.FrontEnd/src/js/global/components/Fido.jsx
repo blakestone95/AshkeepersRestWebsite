@@ -182,8 +182,16 @@ class Fido extends React.Component {
     // Replace previously aborted (or new) AbortController
     this.aborts[key] = abortController;
 
+    let fetchUrl = config.path;
+    if (config.query) {
+      const stringifiedQueryParams = Object.entries(config.query)
+        .map(([key, param]) => `${key}=${param}`)
+        .join('&');
+      fetchUrl += `?${stringifiedQueryParams}`;
+    }
+
     // TODO: implement query stringify for fetch url
-    fetch(config.path, {
+    fetch(fetchUrl, {
       method,
       headers,
       body,
