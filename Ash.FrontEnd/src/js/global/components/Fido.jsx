@@ -42,7 +42,6 @@ const defaultFetchConfig = {
  * @prop {boolean} success - did we receive a good reply from the server?
  * @prop {boolean} fail - did the request fail or did the server return a bad response?
  * @prop {object} data - response payload of the successful request
- * @prop {object} prevData - response payload of the previous successful request
  * @prop {object} error - js error object
  * @prop {Function} call - function to initiate a fetch
  */
@@ -51,7 +50,6 @@ const initialFetchState = {
   success: false,
   fail: false,
   data: null,
-  prevData: null,
   error: null,
   call: null,
 };
@@ -96,7 +94,7 @@ class Fido extends React.Component {
     // Call any fetch items with the callOnMount option set
     Object.entries(configs).forEach(([key, config]) => {
       if (config.options.callOnMount) {
-        this.dispatch(key, config);
+        this.dispatchFetch(key, config);
       }
     });
   }
@@ -149,7 +147,7 @@ class Fido extends React.Component {
    * Call method for initiating a fetch
    * @param {string} key - fetch item key
    * @returns {(configOverride: object) => void} accepts immediate overrides to the
-   *    config object and calls the dispatch method
+   *    config object and calls the dispatchFetch method
    */
   onCall = key => configOverride => {
     const configs = this.getConfigs();
@@ -159,7 +157,7 @@ class Fido extends React.Component {
       newConfig = { ...config, ...configOverride };
     }
 
-    this.dispatch(key, newConfig);
+    this.dispatchFetch(key, newConfig);
   };
 
   /**
@@ -167,7 +165,7 @@ class Fido extends React.Component {
    * @param {string} key - fetch item key
    * @param {object} config - fetch item configuration
    */
-  dispatch = (key, config) => {
+  dispatchFetch = (key, config) => {
     const method = config.options.method.toUpperCase();
     const abortController = new AbortController();
 
@@ -214,8 +212,7 @@ class Fido extends React.Component {
         inFlight: true,
         success: false,
         fail: false,
-        data: null,
-        prevData,
+        data: prevData,
         error: null,
       },
     });
@@ -248,7 +245,6 @@ class Fido extends React.Component {
         success: true,
         fail: false,
         data: json,
-        prevData: null,
         error: null,
       },
     });
@@ -271,7 +267,6 @@ class Fido extends React.Component {
         success: false,
         fail: true,
         data: null,
-        prevData: null,
         error: error,
       },
     });
