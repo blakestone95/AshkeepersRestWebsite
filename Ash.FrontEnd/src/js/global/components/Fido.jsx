@@ -190,7 +190,6 @@ class Fido extends React.Component {
       fetchUrl += `?${stringifiedQueryParams}`;
     }
 
-    // TODO: implement query stringify for fetch url
     fetch(fetchUrl, {
       method,
       headers,
