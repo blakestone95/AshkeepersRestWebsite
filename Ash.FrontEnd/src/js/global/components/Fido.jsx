@@ -1,4 +1,5 @@
 import React from 'react';
+import { memoize } from 'memoize-one';
 
 /* EXAMPLE
 fetchItems = {
@@ -36,21 +37,6 @@ const defaultFetchConfig = {
 };
 
 /**
- * Generate configurations for the supplied fetches
- * @param {object} fetchItems - Object containing named config objects
- * @returns {object} Named config objects composed of the default config
- *    above, the supplied config object, and a new AbortController
- */
-function createFetchConfigs(fetchItems) {
-  return Object.entries(fetchItems).reduce((configs, [key, config]) => {
-    const abortSignal = new AbortController();
-    configs[key] = { ...defaultFetchConfig, ...config, abortSignal };
-
-    return configs;
-  }, {});
-}
-
-/**
  * Fetch state object default object shape
  * @prop {boolean} inFlight - is the request awaiting a reply?
  * @prop {boolean} success - did we receive a good reply from the server?
@@ -73,7 +59,6 @@ const initialFetchState = {
 /**
  * Generate fetch state objects
  * @param {object} fetchItems - Object containing named config objects
- * @param {object} configs - generated fetch configuration objects
  * @param {object} callFunc - "call" function
  * @returns {object} Fetch config objects, keyed by config name, composed of
  *    the default state above and the "call" function
@@ -89,21 +74,24 @@ function createInitFetchState(fetchItems, callFunc) {
   }, {});
 }
 
-// TODO: add support for configuration updates
 // TODO: implement request aborting
+/**
+ * Fetch React Component for retrieving data from a server using the *fetch* API
+ * Follows the render props pattern for wrapping children
+ * @prop {object} fetchItems - Collection of configurations for fetch calls.
+ *    Will generate new state for any new fetch items received, but will not discard any
+ *    previous fetch item states until being unmounted.
+ */
 class Fido extends React.Component {
   constructor(props) {
     super(props);
 
     const { fetchItems } = props;
-    this.state = {
-      fetchState: createInitFetchState(fetchItems, this.onCall),
-      configs: createFetchConfigs(fetchItems),
-    };
+    this.state = createInitFetchState(fetchItems, this.onCall);
   }
 
   componentDidMount() {
-    const { configs } = this.state;
+    const configs = this.getConfigs();
 
     // Call any fetch items with the callOnMount option set
     Object.entries(configs).forEach(([key, config]) => {
@@ -117,9 +105,45 @@ class Fido extends React.Component {
     const { fetchItems } = this.props;
 
     if (fetchItems !== prevProps.fetchItems) {
-      this.setState({ configs: createFetchConfigs(fetchItems) });
+      // Generate default state for any new fetch items (don't mess with existing ones)
+      const newFetchItems = Object.keys(fetchItems).reduce(
+        (newFetchItems, itemKey) => {
+          if (!prevProps.fetchItems[itemKey]) {
+            newFetchItems[itemKey] = fetchItems[itemKey];
+          }
+
+          return newFetchItems;
+        },
+        {}
+      );
+      this.setState({ ...createInitFetchState(newFetchItems, this.onCall) });
     }
   }
+
+  /**
+   * Get the configurations derived from fetchItems
+   * Small wrapper for *generateConfigs*
+   */
+  getConfigs = () => {
+    const { fetchItems } = this.props;
+
+    return this.generateConfigs(fetchItems);
+  };
+
+  /**
+   * Generate configurations for the supplied fetches
+   * **Memoized** so that configs are only regenerated if fetchItems changes
+   * @param {object} fetchItems - Object containing named config objects
+   * @returns {object} Named config objects composed of the default config
+   *    and the supplied config object
+   */
+  generateConfigs = memoize(fetchItems =>
+    Object.entries(fetchItems).reduce((configs, [key, config]) => {
+      configs[key] = { ...defaultFetchConfig, ...config };
+
+      return configs;
+    }, {})
+  );
 
   /**
    * Call method for initiating a fetch
@@ -128,7 +152,7 @@ class Fido extends React.Component {
    *    config object and calls the dispatch method
    */
   onCall = key => configOverride => {
-    const { configs } = this.state;
+    const configs = this.getConfigs();
 
     let newConfig = configs[key];
     if (configOverride) {
@@ -144,8 +168,8 @@ class Fido extends React.Component {
    * @param {object} config - fetch item configuration
    */
   dispatch = (key, config) => {
-    const { fetchState } = this.state;
     const method = config.options.method.toUpperCase();
+    const abortSignal = new AbortController();
 
     let body = null;
     if (method !== 'GET' && method !== 'HEAD') {
@@ -168,7 +192,7 @@ class Fido extends React.Component {
       referrerPolicy: 'no-referrer-when-downgrade', // default
       // integrity
       // keepalive
-      signal: config.abortSignal,
+      signal: abortSignal,
     })
       .then(Fido.processResponse)
       .then(this.setData(key))
@@ -177,10 +201,10 @@ class Fido extends React.Component {
     // Update fetch state
     let prevData = null;
     if (config.options.preserveData) {
-      prevData = fetchState[key].data;
+      prevData = this.state[key].data;
     }
 
-    this.setFetchState({
+    this.setState({
       [key]: {
         inFlight: true,
         success: false,
@@ -213,7 +237,7 @@ class Fido extends React.Component {
    * @returns {(json: object) => void}
    */
   setData = key => json => {
-    this.setFetchState({
+    this.setState({
       [key]: {
         inFlight: false,
         success: true,
@@ -231,7 +255,7 @@ class Fido extends React.Component {
    * @returns {(error: object) => void}
    */
   onFailure = key => error => {
-    this.setFetchState({
+    this.setState({
       [key]: {
         inFlight: false,
         success: false,
@@ -245,24 +269,10 @@ class Fido extends React.Component {
     throw new Error('No success. Cannot fetch. So Network error.');
   };
 
-  /**
-   * Update the fetchState object in state
-   * @param {object} newFetchStateObj - object defining the new part of fetchState
-   */
-  setFetchState = newFetchStateObj => {
-    const newFetchState = { ...this.state.fetchState };
-    Object.entries(newFetchStateObj).forEach(([key, value]) => {
-      newFetchState[key] = value;
-    });
-
-    this.setState({ fetchState: newFetchState });
-  };
-
   render() {
     const { render } = this.props;
-    const { fetchState } = this.state;
-
-    return render(fetchState);
+    const fetches = { ...this.state };
+    return render(fetches);
   }
 }
 
