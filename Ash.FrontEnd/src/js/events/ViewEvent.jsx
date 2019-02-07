@@ -1,4 +1,5 @@
 import React from 'react';
+import { Fido } from 'global/components';
 
 const FakeData = [
   {
@@ -27,10 +28,20 @@ class ViewEvent extends React.Component {
       },
     } = this.props;
 
+    const fetchItems = {
+      event: {
+        // TODO: changeover path when endpoints are written
+        path: '/api/events', //`api/events/${eventId}`,
+      },
+    };
+
     return (
-      <div>
-        {JSON.stringify(FakeData.find(event => event.id === Number(eventId)))}
-      </div>
+      <Fido
+        fetchItems={fetchItems}
+        render={fetches => {
+          return <div>{JSON.stringify(fetches.event.data)}</div>;
+        }}
+      />
     );
   }
 }

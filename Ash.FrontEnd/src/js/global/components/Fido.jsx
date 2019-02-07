@@ -1,5 +1,5 @@
 import React from 'react';
-import { memoize } from 'memoize-one';
+import memoizeOne from 'memoize-one';
 
 /* EXAMPLE
 fetchItems = {
@@ -16,7 +16,6 @@ fetchItems = {
  * @prop {string} path - fetch url
  * @prop {object} query - object containing query string key-value pairs
  * @prop {object} payload - json payload for request
- * @prop {AbortController} abortSignal - for aborting the request
  * @prop {object} options - other options [optional]
  * @prop {string} options.method - HTTP method type (case-insensitive) [optional]
  * @prop {boolean} options.callOnMount - flag for whether the fetch should be
@@ -28,7 +27,6 @@ const defaultFetchConfig = {
   path: '',
   query: null,
   payload: null,
-  abortSignal: null,
   options: {
     method: 'get',
     callOnMount: true,
@@ -135,7 +133,7 @@ class Fido extends React.Component {
    * @returns {object} Named config objects composed of the default config
    *    and the supplied config object
    */
-  generateConfigs = memoize(fetchItems =>
+  generateConfigs = memoizeOne(fetchItems =>
     Object.entries(fetchItems).reduce((configs, [key, config]) => {
       configs[key] = { ...defaultFetchConfig, ...config };
 
@@ -214,14 +212,12 @@ class Fido extends React.Component {
       prevData = this.state[key].data;
     }
 
-    this.setState({
-      [key]: {
-        inFlight: true,
-        success: false,
-        fail: false,
-        data: prevData,
-        error: null,
-      },
+    this.setFetchState(key, {
+      inFlight: true,
+      success: false,
+      fail: false,
+      data: prevData,
+      error: null,
     });
   };
 
@@ -246,14 +242,12 @@ class Fido extends React.Component {
    * @returns {(json: object) => void}
    */
   setData = key => json => {
-    this.setState({
-      [key]: {
-        inFlight: false,
-        success: true,
-        fail: false,
-        data: json,
-        error: null,
-      },
+    this.setFetchState(key, {
+      inFlight: false,
+      success: true,
+      fail: false,
+      data: json,
+      error: null,
     });
   };
 
@@ -264,22 +258,30 @@ class Fido extends React.Component {
    */
   onFailure = key => error => {
     // Ignore aborted fetches (don't change state)
-    if (error instanceof AbortError) {
+    if (error.name === 'AbortError') {
       return;
     }
 
-    this.setState({
-      [key]: {
-        inFlight: false,
-        success: false,
-        fail: true,
-        data: null,
-        error: error,
-      },
+    this.setFetchState(key, {
+      inFlight: false,
+      success: false,
+      fail: true,
+      data: null,
+      error: error,
     });
 
     throw new Error('No success. Cannot fetch. So Network error.');
   };
+
+  /**
+   * Set particular fetch state preserving any previous values
+   * @param {string} key - fetch state key
+   * @param {object} newFetchState - values of the fetch state to update
+   */
+  setFetchState(key, newFetchState) {
+    const oldFetchState = this.state[key];
+    this.setState({ [key]: { ...oldFetchState, ...newFetchState } });
+  }
 
   render() {
     const { render } = this.props;

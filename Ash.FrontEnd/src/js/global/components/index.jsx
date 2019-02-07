@@ -1,3 +1,2 @@
-import SectionTile from './SectionTile';
-
-export { SectionTile };
+export { default as SectionTile } from './SectionTile';
+export { default as Fido } from './Fido';
