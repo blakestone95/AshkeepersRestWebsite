@@ -2,7 +2,7 @@ import React from 'react';
 import memoizeOne from 'memoize-one';
 
 /* EXAMPLE
-fetchItems = {
+fetchConfigs = {
   name: {
     // ...configObject
   },
@@ -54,13 +54,13 @@ const initialFetchState = {
 
 /**
  * Generate fetch state objects
- * @param {object} fetchItems - Object containing named config objects
+ * @param {object} fetchConfigs - Object containing named config objects
  * @param {object} callFunc - "call" function
  * @returns {object} Fetch config objects, keyed by config name, composed of
  *    the default state above and the "call" function
  */
-function createInitFetchState(fetchItems, callFunc) {
-  return Object.keys(fetchItems).reduce((initState, key) => {
+function createInitFetchState(fetchConfigs, callFunc) {
+  return Object.keys(fetchConfigs).reduce((initState, key) => {
     initState[key] = {
       ...initialFetchState,
       call: callFunc(key),
@@ -73,23 +73,23 @@ function createInitFetchState(fetchItems, callFunc) {
 /**
  * Fetch React Component for retrieving data from a server using the *fetch* API
  * Follows the render props pattern for wrapping children
- * @prop {object} fetchItems - Collection of configurations for fetch calls.
- *    Will generate new state for any new fetch items received, but will not discard any
+ * @prop {object} fetchConfigs - Collection of configurations for fetch calls.
+ *    Will generate new state for any new fetch configs received, but will not discard any
  *    previous fetch item states until being unmounted.
  */
 class Fido extends React.Component {
   constructor(props) {
     super(props);
 
-    const { fetchItems } = props;
-    this.state = createInitFetchState(fetchItems, this.onCall);
+    const { fetchConfigs } = props;
+    this.state = createInitFetchState(fetchConfigs, this.onCall);
     this.aborts = {};
   }
 
   componentDidMount() {
-    const configs = this.getConfigs();
+    const configs = this.getFullConfigs();
 
-    // Call any fetch items with the callOnMount option set
+    // Call any fetch configs with the callOnMount option set
     Object.entries(configs).forEach(([key, config]) => {
       if (config.options.callOnMount) {
         this.dispatchFetch(key, config);
@@ -98,14 +98,14 @@ class Fido extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { fetchItems } = this.props;
+    const { fetchConfigs } = this.props;
 
-    if (fetchItems !== prevProps.fetchItems) {
-      // Generate default state for any new fetch items (don't mess with existing ones)
-      const newFetchItems = Object.keys(fetchItems).reduce(
+    if (fetchConfigs !== prevProps.fetchConfigs) {
+      // Generate default state for any _new_ fetch configs from props (don't mess with existing ones)
+      const newFetchItems = Object.keys(fetchConfigs).reduce(
         (newFetchItems, itemKey) => {
-          if (!prevProps.fetchItems[itemKey]) {
-            newFetchItems[itemKey] = fetchItems[itemKey];
+          if (!prevProps.fetchConfigs[itemKey]) {
+            newFetchItems[itemKey] = fetchConfigs[itemKey];
           }
 
           return newFetchItems;
@@ -117,27 +117,27 @@ class Fido extends React.Component {
   }
 
   /**
-   * Get the configurations derived from fetchItems
-   * Small wrapper for *generateConfigs*
+   * Get the configurations derived from fetchConfigs
+   * Small wrapper for *generateFullConfigs*
    */
-  getConfigs = () => {
-    const { fetchItems } = this.props;
+  getFullConfigs = () => {
+    const { fetchConfigs } = this.props;
 
-    return this.generateConfigs(fetchItems);
+    return this.generateFullConfigs(fetchConfigs);
   };
 
   /**
    * Generate configurations for the supplied fetches
-   * **Memoized** so that configs are only regenerated if fetchItems changes
-   * @param {object} fetchItems - Object containing named config objects
+   * **Memoized** so that configs are only regenerated if fetchConfigs changes
+   * @param {object} fetchConfigs - Object containing named config objects
    * @returns {object} Named config objects composed of the default config
    *    and the supplied config object
    */
-  generateConfigs = memoizeOne(fetchItems =>
-    Object.entries(fetchItems).reduce((configs, [key, config]) => {
-      configs[key] = { ...defaultFetchConfig, ...config };
+  generateFullConfigs = memoizeOne(fetchConfigs =>
+    Object.entries(fetchConfigs).reduce((fullConfigs, [key, config]) => {
+      fullConfigs[key] = { ...defaultFetchConfig, ...config };
 
-      return configs;
+      return fullConfigs;
     }, {})
   );
 
@@ -147,15 +147,10 @@ class Fido extends React.Component {
    * @returns {(configOverride: object) => void} accepts immediate overrides to the
    *    config object and calls the dispatchFetch method
    */
-  onCall = key => configOverride => {
-    const configs = this.getConfigs();
-
-    let newConfig = configs[key];
-    if (configOverride) {
-      newConfig = { ...config, ...configOverride };
-    }
-
-    this.dispatchFetch(key, newConfig);
+  onCall = key => (configOverride = {}) => {
+    const fullConfigs = this.getFullConfigs();
+    const newFullConfig = { ...fullConfigs[key], ...configOverride };
+    this.dispatchFetch(key, newFullConfig);
   };
 
   /**
