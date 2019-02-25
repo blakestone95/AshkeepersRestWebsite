@@ -112,6 +112,17 @@ class Fido extends React.Component {
         },
         {}
       );
+
+      // Call any new fetch configs with the callOnMount option set
+      const configs = this.getFullConfigs();
+      Object.keys(newFetchItems).forEach(key => {
+        const config = configs[key];
+
+        if (config.options.callOnMount) {
+          this.dispatchFetch(key, config);
+        }
+      });
+
       this.setState({ ...createInitFetchState(newFetchItems, this.onCall) });
     }
   }
@@ -149,8 +160,15 @@ class Fido extends React.Component {
    */
   onCall = key => (configOverride = {}) => {
     const fullConfigs = this.getFullConfigs();
-    const newFullConfig = { ...fullConfigs[key], ...configOverride };
-    this.dispatchFetch(key, newFullConfig);
+
+    if (fullConfigs[key]) {
+      const newFullConfig = { ...fullConfigs[key], ...configOverride };
+      this.dispatchFetch(key, newFullConfig);
+    }
+
+    throw new Error(
+      `Config for "${key}" fetch is no longer in props. Very sad.`
+    );
   };
 
   /**
