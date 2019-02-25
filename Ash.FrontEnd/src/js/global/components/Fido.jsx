@@ -1,16 +1,6 @@
 import React from 'react';
 import memoizeOne from 'memoize-one';
 
-/* EXAMPLE
-fetchConfigs = {
-  name: {
-    // ...configObject
-  },
-  nextName,
-  ...
-}
-*/
-
 /**
  * Fetch configuration object default object shape
  * @prop {string} path - fetch url
@@ -18,8 +8,8 @@ fetchConfigs = {
  * @prop {object} payload - json payload for request
  * @prop {object} options - other options [optional]
  * @prop {string} options.method - HTTP method type (case-insensitive) [optional]
- * @prop {boolean} options.callOnMount - flag for whether the fetch should be
- *    performed on mount [optional]
+ * @prop {boolean} options.fetchImmediately - flag for whether the fetch should be
+ *    performed right away (on mount or on update which adds a new fetch config) [optional]
  * @prop {boolean} options.preservePreviousData - flag for whether the fetch should
  *    preserve the previously returned data set when a new call is initiated [optional]
  */
@@ -29,7 +19,7 @@ const defaultFetchConfig = {
   payload: null,
   options: {
     method: 'get',
-    callOnMount: true,
+    fetchImmediately: true,
     preservePreviousData: true,
   },
 };
@@ -55,9 +45,11 @@ const initialFetchState = {
 /**
  * Generate fetch state objects
  * @param {object} fetchConfigs - Object containing named config objects
- * @param {object} callFunc - "call" function
- * @returns {object} Fetch config objects, keyed by config name, composed of
- *    the default state above and the "call" function
+ * @param {object} callFunc - function used to dispatch a fetch for `.call()`
+ *    (Fido needs to supply this function since it's dependent on configuration
+ *    derived from props)
+ * @returns {object} Default fetch config objects (see above) with call function
+ *    keyed on config name
  */
 function createInitFetchState(fetchConfigs, callFunc) {
   return Object.keys(fetchConfigs).reduce((initState, key) => {
@@ -89,9 +81,9 @@ class Fido extends React.Component {
   componentDidMount() {
     const configs = this.getFullConfigs();
 
-    // Call any fetch configs with the callOnMount option set
+    // Call any fetch configs with the fetchImmediately option set
     Object.entries(configs).forEach(([key, config]) => {
-      if (config.options.callOnMount) {
+      if (config.options.fetchImmediately) {
         this.dispatchFetch(key, config);
       }
     });
@@ -113,12 +105,12 @@ class Fido extends React.Component {
         {}
       );
 
-      // Call any new fetch configs with the callOnMount option set
+      // Call any new fetch configs with the fetchImmediately option set
       const configs = this.getFullConfigs();
       Object.keys(newFetchItems).forEach(key => {
         const config = configs[key];
 
-        if (config.options.callOnMount) {
+        if (config.options.fetchImmediately) {
           this.dispatchFetch(key, config);
         }
       });
@@ -161,14 +153,14 @@ class Fido extends React.Component {
   onCall = key => (configOverride = {}) => {
     const fullConfigs = this.getFullConfigs();
 
-    if (fullConfigs[key]) {
-      const newFullConfig = { ...fullConfigs[key], ...configOverride };
-      this.dispatchFetch(key, newFullConfig);
+    if (!fullConfigs[key]) {
+      throw new Error(
+        `Config for "${key}" fetch is no longer in props. Very sad.`
+      );
     }
 
-    throw new Error(
-      `Config for "${key}" fetch is no longer in props. Very sad.`
-    );
+    const newFullConfig = { ...fullConfigs[key], ...configOverride };
+    this.dispatchFetch(key, newFullConfig);
   };
 
   /**
