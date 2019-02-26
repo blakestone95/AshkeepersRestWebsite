@@ -125,7 +125,7 @@ fetches = {
 
 # Fido usage examples
 
-## Quick and dirty get
+## Quick and dirty GET request
 
 This is the easiest way to write a component that uses Fido:
 
@@ -162,7 +162,7 @@ class MyComponent extends React.Component {
 
 This pattern is fine for small/cheap renders, but be aware that Fido will re-render on every parent component update.  For more complicated or expensive renders, define the `fetchConfigs` object and the `render` function in a more persistent manner (see following).
 
-## Standard get approach
+## Standard GET request approach
 
 This is a consistent way to use Fido that won't cause extra renders:
 
@@ -199,7 +199,7 @@ class MyComponent extends React.Component {
 }
 ```
 
-Note, to truly prevent re-renders, `MyComponent` must either extend `PureComponent`, or implement the `shouldComponentUpdate` life cycle method.
+Note, to truly prevent re-renders of Fido, `MyComponent` must either extend `PureComponent`, or implement the `shouldComponentUpdate` life cycle method, as Fido is a regular component and will update whenever its parent updates.
 
 ## Using another HTTP method (in this example, POST)
 
