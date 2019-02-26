@@ -1,11 +1,51 @@
-# Fido usage examples
+# Fido - React wrapper for `fetch`
 
-See Fido file for the fetch config object structure
+Fido is a React component for making browser HTTP requests with the JavaScript `fetch` API.  It aims to provide an easy and reliable way to handle server calls in a React environment.  Fido follows the render props pattern to give developers full control over what it renders.
 
-## `fetchConfig` structure
+# The component
+
+## Fido
+
+To use Fido in your project, simply import it:
+
+```jsx
+import Fido from 'global/components/Fido';
+```
+
+And then use it as a React component with the props shown below:
+
+```jsx
+<Fido 
+  fetchConfigs={fetchConfigs} 
+  render={renderFunction} 
+/>
+```
+
+Fido also exports the HTTP_METHODS enumeration:
+
+```jsx
+import Fido, { HTTP_METHODS } from 'global/components/Fido';
+
+HTTP_METHODS = {
+  get: 'GET',
+  head: 'HEAD',
+  post: 'POST',
+  put: 'PUT',
+  delete: 'DELETE',
+  connect: 'CONNECT',
+  options: 'OPTIONS',
+  trace: 'TRACE',
+  patch: 'PATCH',
+};
+```
+
+## `fetchConfigs`
+
+`fetchConfigs` is a collection of objects (read, object of objects) that specifies how Fido should perform the `fetch`.  Below is listed each configuration property with some notes about each one:
 
 ```js
-const fetchConfig = {
+fetchConfig = {
+  // Property name here will be the same property name used in Fido's output
   fetchMyData: {
     // HTTP request url path
     path: '/some/path/to/resource',
@@ -29,7 +69,6 @@ const fetchConfig = {
     options: {
       // HTTP request method
       // Accepts case-insensitive string
-      // Fido also exports the HTTP_METHODS enumeration object (keys are lowercase)
       method: HTTP_METHODS.get, // default
   
       // flag - dispatch HTTP request immediately
@@ -44,6 +83,47 @@ const fetchConfig = {
   }
 }
 ```
+
+## `render`
+
+`render` is a function used to define what Fido renders.  It passes down the state of each fetch in the form of a collection of objects.  Each fetch state passed down has the same property name as the config used to create it.  It must return a valid React component return value.
+
+```jsx
+render={fetches => {
+  const fetchStateObj = fetches.fetchConfigName;
+  return <MyDataView data={fetchStateObj.data} />
+}}
+```
+
+Following is the structure of a fetch state object:
+
+```js
+fetches = {
+  // Fetch config name
+  fetchMyData: {
+    // flag - has the request been sent and no reply received
+    inFlight: false,
+
+    // flag - has a good response been received (no 400 or 500 errors)
+    success: false,
+
+    // flag - has the request failed or an error response was received (400 or 500 errors)
+    fail: false,
+
+    // The JSON body of the reply
+    data: null,
+
+    // The error message if an error was thrown
+    error: null,
+
+    // A function to dispatch a fetch request
+    // Accepts a config override object that follows the same structure as a fetchConfigs property
+    call: callFunc(configOverride)
+  }
+}
+```
+
+# Fido usage examples
 
 ## Quick and dirty get
 
