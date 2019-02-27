@@ -68,7 +68,7 @@ const defaultFetchConfig = {
  * @prop {boolean} fail - did the request fail or did the server return a bad response?
  * @prop {object} data - response payload of the successful request
  * @prop {object} error - js error object
- * @prop {Function} call - function to initiate a fetch
+ * @prop {function} call - function to initiate a fetch
  */
 const initialFetchState = {
   inFlight: false,

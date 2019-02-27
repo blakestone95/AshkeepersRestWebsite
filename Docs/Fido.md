@@ -47,36 +47,36 @@ HTTP_METHODS = {
 fetchConfig = {
   // Property name here will be the same property name used in Fido's output
   fetchMyData: {
-    // HTTP request url path
-    path: '/some/path/to/resource',
+    // {string} HTTP request url path
+    path: '/path/to/stick',
   
-    // HTTP request url query string
-    // Example is translated to "?mouse=Jerry&cheese=swiss" before fetch is dispatched
+    // {object of strings} HTTP request url query string
+    // Example is translated to "?dog=Fido&fetching=stick" before fetch is dispatched
     query: {
-      mouse: 'Jerry',
-      cheese: 'swiss'
+      dog: 'Fido',
+      fetching: 'stick'
     },
   
-    // HTTP request body
+    // {any object} HTTP request body
     // JSON object to include as the request body
     // String literals work too
     payload: {
-      some: {
-        json: ['object']
+      found: {
+        item: ['stick', 'bone', 'squirrel']
       }
     },
   
     options: {
-      // HTTP request method
+      // {string or HTTP_METHODS enum} HTTP request method
       // Accepts case-insensitive string
       method: HTTP_METHODS.get, // default
   
-      // flag - dispatch HTTP request immediately
+      // {boolean} flag - dispatch HTTP request immediately
       // Will work whether Fido mounts with this option set on configs, or the a new config with this option is added after Fido is mounted
       // Setting this option on an existing config when Fido is already mounted does nothing
       fetchImmediately: true, // default
   
-      // flag - preserve old data when a new fetch request is sent
+      // {boolean} flag - preserve old data when a new fetch request is sent
       // If false, the fetchMyData.data value will be set to null every time .call() is called
       preservePreviousData: true // default
     }
@@ -101,22 +101,22 @@ Following is the structure of a fetch state object:
 fetches = {
   // Fetch config name
   fetchMyData: {
-    // flag - has the request been sent and no reply received
+    // {boolean} flag - has the request been sent and no reply received
     inFlight: false,
 
-    // flag - has a good response been received (no 400 or 500 errors)
+    // {boolean} flag - has a good response been received (no 400 or 500 errors)
     success: false,
 
-    // flag - has the request failed or an error response was received (400 or 500 errors)
+    // {boolean} flag - has the request failed or an error response was received (400 or 500 errors)
     fail: false,
 
-    // The JSON body of the reply
+    // {any object} The JSON body of the reply
     data: null,
 
-    // The thrown JavaScript error object if an error occurs
+    // {Error} The thrown JavaScript error object if an error occurs
     error: null,
 
-    // A function to dispatch a fetch request
+    // {function} A function to dispatch a fetch request
     // Accepts a config override object that follows the same structure as a fetchConfigs property
     call: callFunc(configOverride)
   }
