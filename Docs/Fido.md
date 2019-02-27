@@ -113,7 +113,7 @@ fetches = {
     // The JSON body of the reply
     data: null,
 
-    // The error message if an error was thrown
+    // The thrown JavaScript error object if an error occurs
     error: null,
 
     // A function to dispatch a fetch request
