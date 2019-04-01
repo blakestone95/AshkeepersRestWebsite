@@ -2,7 +2,9 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Announcement extends Model
 {
@@ -23,4 +25,10 @@ class Announcement extends Model
      * @var string
      */
     protected $table = 'announcements';
+
+
+    public function scopeGetCreatedInLastMonth(Builder $builder)
+    {
+        $builder->whereBetween('created_at', [Carbon::now()->subMonth(), Carbon::now()]);
+    }
 }
