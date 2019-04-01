@@ -46,12 +46,8 @@ class AnnouncementsController extends Controller
             return $this->respondWithValidatorErrors($validator->errors());
         }
 
-        $perPage = 15;
-
-        if ($request->has('limit'))
-        {
-            $perPage = $request->get('limit');
-        }
+        $perPage = ($request->has('limit')) ?
+            $request->get('limit') : 10;
 
         $announcements = Announcement::orderBy('created_at', 'DESC');
 
