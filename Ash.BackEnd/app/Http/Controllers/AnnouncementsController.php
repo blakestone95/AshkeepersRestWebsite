@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Announcement;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Validator;
 
 class AnnouncementsController extends Controller
@@ -27,11 +29,43 @@ class AnnouncementsController extends Controller
 
     /**
      * Display a listing of the resource.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $announcements = Announcement::GetCreatedInLastMonth()->get();
-        return $this->respond(['Announcements' => $announcements]);
+        $validator = Validator::make($request->all(), [
+            'limit'         => 'digits_between:0,3',
+            'start_date'    => 'required_with:end_date|date|before_or_equal:end_date',
+            'end_date'      => 'required_with:start_date|date|after_or_equal:start_date',
+        ]);
+
+        if ($validator->fails())
+        {
+            return $this->respondWithValidatorErrors($validator->errors());
+        }
+
+        $perPage = 15;
+
+        if ($request->has('limit'))
+        {
+            $perPage = $request->get('limit');
+        }
+
+        $announcements = Announcement::orderBy('created_at', 'DESC');
+
+        if ($request->has('start_date'))
+        {
+            $start = new Carbon($request->get('start_date'));
+            $end = new Carbon($request->get('end_date'));
+            $announcements->datesBetween($start, $end);
+        }
+
+        /** @var LengthAwarePaginator $paginator */
+        $paginator = $announcements->paginate($perPage);
+
+        return $this->respondWithPagination($request, $paginator, ['Announcements' => $paginator->items()]);
     }
 
     /**
