@@ -29,6 +29,11 @@ class Announcement extends Model
 
     public function scopeGetCreatedInLastMonth(Builder $builder)
     {
-        $builder->whereBetween('created_at', [Carbon::now()->subMonth(), Carbon::now()]);
+        return $builder->whereBetween('created_at', [Carbon::now()->subMonth(), Carbon::now()]);
+    }
+
+    public function scopeDatesBetween(Builder $builder, Carbon $start, Carbon $end)
+    {
+        return $builder->whereBetween('created_at', [$start->startOfDay(), $end->endOfDay()]);
     }
 }
