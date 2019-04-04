@@ -49,7 +49,7 @@ Note: In Source Tree, this naming style produces a folder-like structure (not su
 It is generally up to the developer to choose when they want to create a commit and how they want to compose their commit messages.  Some advice:
 
 1. Avoid committing code that doesn't work
-2. If you do, put a note "non-working commit" at the end of your commit message
+2. If you do, put a note "non-working commit" or something at the end of your commit message
 3. Commit when you have a part of your feature working
     - For example, when you...
     - ...Create a new React component
@@ -57,7 +57,7 @@ It is generally up to the developer to choose when they want to create a commit 
     - ...Mass rename stuff
     - ...Fix text
 4. Don't commit without briefly testing your own changes first
-5. To compose good commit messages, imagine that each sentence in the primary part of the message begins with "This commit will..."
+5. To compose good commit messages, imagine that each line of the message begins with "This commit will..."
 6. Be concise in the primary part of the commit message
     - This is what people will see first when they see previews of the commit (like in the commit tree)
 7. Reference GitHub issue numbers related to the code you are working on
@@ -66,15 +66,17 @@ It is generally up to the developer to choose when they want to create a commit 
 An example of a good commit message:
 
 ```
-Add calendar component.  Make "event calendar" tab go to new calendar component.
+Add event calendar component and a tab to access it
 
 #10
-Also I need to note some stuff here that might be relevant to someone who wants to know some of that other changes I made in this commit.  They didn't really deserve their own note up above, though, so I noted them down here instead.  It's up to me to decide what things are relevant enough to put in the primary section, and what stuff, if any, I should put down here instead.
+Update README.md
+Refactor a few things
+Implement bugs
 ```
 
-Notice that the phrase "This commit will..." may be said in front each sentence in the first line and it still makes sense.
+Notice that the phrase "This commit will..." may be said in front each sentence in each line and it still makes sense.
 
-Follow this advice and you will make people happy!
+Follow this advice and you will make your fellow devs very happy!
 
 ## Pull Requests
 Before you can merge your changes back into *development*, you must open a **pull request** so that other developers may review your code.
