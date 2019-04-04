@@ -3,8 +3,8 @@ const webpack = require('webpack');
 const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env, argv) => {
   // --- Get arguments ---
@@ -27,9 +27,10 @@ module.exports = (env, argv) => {
     context: path.join(__dirname, '/src'),
     entry: ['@babel/polyfill', './js/index.jsx'],
     output: {
-      filename: '[name].bundle.js',
+      filename: 'bundle.[hash].js',
       path: BUNDLE_OUTPUT_PATH,
-      publicPath: '/',
+      // In production build, we need public path to be /js/ so html webpack plugin puts correct paths
+      publicPath: isProduction ? '/js/' : '/',
     },
     resolve: {
       extensions: ['.js', '.jsx'],
@@ -54,9 +55,10 @@ module.exports = (env, argv) => {
           loader: 'babel-loader',
         },
         {
-          test: /\.less$/,
+          test: /\.(less|css)$/,
           loaders: [
-            'style-loader',
+            // Extract CSS when in production mode: https://github.com/webpack-contrib/mini-css-extract-plugin#advanced-configuration-example
+            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
             { loader: 'css-loader', options: { sourceMap: !isProduction } },
             { loader: 'less-loader', options: { sourceMap: !isProduction } },
           ],
@@ -76,7 +78,6 @@ module.exports = (env, argv) => {
     devServer: {
       publicPath: '/',
       historyApiFallback: true,
-      inline: true,
       proxy: {
         '/api': {
           target: 'http://localhost:8000',
@@ -85,16 +86,20 @@ module.exports = (env, argv) => {
       },
     },
     plugins: [
-      new CleanWebpackPlugin([HTML_OUTPUT_PATH, BUNDLE_OUTPUT_PATH], {
-        root: path.resolve('../'), // root options prevent plugin from skipping backend build dirs
+      new CleanWebpackPlugin({
+        // Following settings are required to clean html webpack plugin output
+        dangerouslyAllowCleanPatternsOutsideProject: true,
+        dry: false,
+        cleanOnceBeforeBuildPatterns: ['**/*', HTML_OUTPUT_FILE],
       }),
       new HtmlWebpackPlugin({
         filename: HTML_OUTPUT_FILE,
         favicon: path.resolve('./src/img/favicon.ico'),
         template: path.resolve('./index.html'),
       }),
-      new UglifyJSPlugin({
-        sourceMap: true,
+      new MiniCssExtractPlugin({
+        filename: '[name].[hash].css',
+        chunkFilename: '[id].[hash].css',
       }),
     ],
   };
