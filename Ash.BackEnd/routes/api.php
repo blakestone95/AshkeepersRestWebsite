@@ -19,7 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::resource('announcements', 'AnnouncementsController')->except('create', 'edit');
 
-Route::get('events', ['uses' => 'EventsController@index']);
+
+Route::resource('events', 'EventsController')->except('create', 'edit');
 
 Route::fallback(function(){
     return response()->json(['message' => 'Not Found!'], 404);

@@ -2,7 +2,9 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Event extends Model
 {
@@ -36,4 +38,9 @@ class Event extends Model
     protected $dates = [
         'start', 'end'
     ];
+
+    public function scopeDatesBetween(Builder $builder, Carbon $start, Carbon $end)
+    {
+        return $builder->whereBetween('start', [$start->startOfDay(), $end->endOfDay()]);
+    }
 }
