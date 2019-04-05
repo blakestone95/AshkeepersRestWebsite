@@ -2,6 +2,7 @@
 const webpack = require('webpack');
 const path = require('path');
 
+const WebappWebpackPlugin = require('webapp-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -11,15 +12,15 @@ module.exports = (env, argv) => {
   const { p: isProduction } = argv;
 
   // --- Set up paths ---
-  const HTML_OUTPUT_PATH = path.resolve(
-    isProduction ? '../Ash.Backend/resources/views' : './build'
-  );
+  const HTML_OUTPUT_PATH = isProduction
+    ? path.resolve('../Ash.Backend/resources/views')
+    : '';
   const HTML_OUTPUT_FILE = path.join(
     HTML_OUTPUT_PATH,
     isProduction ? 'index.blade.php' : 'index.html'
   );
   const BUNDLE_OUTPUT_PATH = path.resolve(
-    isProduction ? '../Ash.Backend/public/js' : './build'
+    isProduction ? '../Ash.Backend/public' : './build'
   );
 
   return {
@@ -27,10 +28,9 @@ module.exports = (env, argv) => {
     context: path.join(__dirname, '/src'),
     entry: ['@babel/polyfill', './js/index.jsx'],
     output: {
-      filename: 'bundle.[hash].js',
+      filename: 'js/bundle.[hash].js',
       path: BUNDLE_OUTPUT_PATH,
-      // In production build, we need public path to be /js/ so html webpack plugin puts correct paths
-      publicPath: isProduction ? '/js/' : '/',
+      publicPath: '/',
     },
     resolve: {
       extensions: ['.js', '.jsx'],
@@ -86,20 +86,44 @@ module.exports = (env, argv) => {
       },
     },
     plugins: [
+      new WebappWebpackPlugin({
+        logo: 'img/favicon.png',
+        cache: true,
+        prefix: 'img',
+        inject: true,
+        favicons: {
+          icons: {
+            android: false,
+            appleIcon: false,
+            appleStartup: false,
+            coast: false,
+            favicons: true,
+            firefox: true,
+            opengraph: false,
+            twitter: false,
+            yandex: false,
+            windows: false,
+          },
+        },
+      }),
       new CleanWebpackPlugin({
         // Following settings are required to clean html webpack plugin output
         dangerouslyAllowCleanPatternsOutsideProject: true,
         dry: false,
-        cleanOnceBeforeBuildPatterns: ['**/*', HTML_OUTPUT_FILE],
+        cleanOnceBeforeBuildPatterns: [
+          'js/**/*',
+          'img/**/*',
+          'css/**/*',
+          HTML_OUTPUT_FILE,
+        ],
       }),
       new HtmlWebpackPlugin({
         filename: HTML_OUTPUT_FILE,
-        favicon: path.resolve('./src/img/favicon.ico'),
-        template: path.resolve('./index.html'),
+        template: 'index.html',
       }),
       new MiniCssExtractPlugin({
-        filename: '[name].[hash].css',
-        chunkFilename: '[id].[hash].css',
+        filename: 'css/[name].[hash].css',
+        chunkFilename: 'css/[id].[hash].css',
       }),
     ],
   };
