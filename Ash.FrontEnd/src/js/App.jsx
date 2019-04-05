@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 
 // Components
 import NavBar from 'NavBar';
@@ -8,7 +8,7 @@ import NavBar from 'NavBar';
 import { PATHS } from 'util/paths';
 import 'style.less';
 
-export const history = createHistory();
+export const history = createBrowserHistory();
 
 export default class App extends React.PureComponent {
   render() {
