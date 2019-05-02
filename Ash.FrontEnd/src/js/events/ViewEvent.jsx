@@ -1,15 +1,5 @@
 import React from 'react';
-import { Fido, SectionTile } from 'global/components';
-
-const toRender = fetches => {
-  const { data, fail } = fetches.event;
-
-  if (!data) return <div>Loading...</div>;
-  if (fail) return <div>Error loading</div>;
-
-  const { title, content } = data.Event;
-  return <SectionTile heading={title} text={content} />;
-};
+import { useFido, SectionTile } from 'global/components';
 
 function ViewEvent(props) {
   const {
@@ -17,14 +7,17 @@ function ViewEvent(props) {
       params: { eventId },
     },
   } = props;
-
-  const fetchItems = {
-    event: {
-      path: `/api/events/${eventId}`,
-    },
+  const eventConf = {
+    path: `/api/events/${eventId}`,
   };
 
-  return <Fido fetchConfigs={fetchItems} render={toRender} />;
+  const event = useFido(eventConf);
+
+  if (!event.data) return <div>Loading...</div>;
+  if (event.fail) return <div>Error loading</div>;
+
+  const { title, content } = event.data.Event;
+  return <SectionTile heading={title} text={content} />;
 }
 
 export default ViewEvent;

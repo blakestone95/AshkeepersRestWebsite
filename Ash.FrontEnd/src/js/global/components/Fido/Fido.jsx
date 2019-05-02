@@ -1,42 +1,7 @@
-// ─────────▄──────────────▄
-// ────────▌▒█───────────▄▀▒▌
-// ────────▌▒▒▀▄───────▄▀▒▒▒▐
-// ───────▐▄▀▒▒▀▀▀▀▄▄▄▀▒▒▒▒▒▐
-// ─────▄▄▀▒▒▒▒▒▒▒▒▒▒▒█▒▒▄█▒▐
-// ───▄▀▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀██▀▒▌
-// ──▐▒▒▒▄▄▄▒▒▒▒▒▒▒▒▒▒▒▒▒▀▄▒▒▌
-// ──▌▒▒▐▄█▀▒▒▒▒▄▀█▄▒▒▒▒▒▒▒█▒▐
-// ─▐▒▒▒▒▒▒▒▒▒▒▒▌██▀▒▒▒▒▒▒▒▒▀▄▌
-// ─▌▒▀▄██▄▒▒▒▒▒▒▒▒▒▒▒░░░░▒▒▒▒▌
-// ─▌▀▐▄█▄█▌▄▒▀▒▒▒▒▒▒░░░░░░▒▒▒▐
-// ▐▒▀▐▀▐▀▒▒▄▄▒▄▒▒▒▒▒░░░░░░▒▒▒▒▌
-// ▐▒▒▒▀▀▄▄▒▒▒▄▒▒▒▒▒▒░░░░░░▒▒▒▐
-// ─▌▒▒▒▒▒▒▀▀▀▒▒▒▒▒▒▒▒░░░░▒▒▒▒▌
-// ─▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▐
-// ──▀▄▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▄▒▒▒▒▌
-// ────▀▄▒▒▒▒▒▒▒▒▒▒▄▄▄▀▒▒▒▒▄▀
-// ───▐▀▒▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
-// ──▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▀
-
 import React from 'react';
 import memoizeOne from 'memoize-one';
 
-/**
- * Enumeration of all HTTP request methods fetch can use
- * Contains all HTTP method listed on the following MDN page as of (2/24/19):
- * https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
- */
-export const HTTP_METHODS = {
-  get: 'GET',
-  head: 'HEAD',
-  post: 'POST',
-  put: 'PUT',
-  delete: 'DELETE',
-  connect: 'CONNECT',
-  options: 'OPTIONS',
-  trace: 'TRACE',
-  patch: 'PATCH',
-};
+import { HTTP_METHODS } from './constants';
 
 /**
  * Fetch configuration object default object shape
@@ -99,6 +64,7 @@ function createInitFetchState(fetchConfigs, callFunc) {
   }, {});
 }
 
+// TODO: Implement with hooks instead
 /**
  * Fetch React Component for retrieving data from a server using the *fetch* API
  * Follows the render props pattern for wrapping children
