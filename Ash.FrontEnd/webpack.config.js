@@ -87,7 +87,7 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new WebappWebpackPlugin({
-        logo: 'img/favicon.png',
+        logo: 'img/Ashkeepers_Rest_Small.png',
         cache: true,
         prefix: 'img',
         inject: true,
@@ -98,7 +98,7 @@ module.exports = (env, argv) => {
             appleStartup: false,
             coast: false,
             favicons: true,
-            firefox: true,
+            firefox: false,
             opengraph: false,
             twitter: false,
             yandex: false,

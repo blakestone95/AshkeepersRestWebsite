@@ -2,12 +2,17 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { PATHS } from 'util/paths';
+import 'img/Ashkeepers_Rest_SVG_Logo_v1.svg';
 
 class NavBar extends React.Component {
   render() {
     return (
       <header className="ash-navbar">
-        <div className="ash-logo">{'Logo\n150px x 150px'}</div>
+        <img
+          className="ash-logo"
+          src="/img/Ashkeepers_Rest_SVG_Logo_v1.svg"
+          alt="Ashkeeper's Rest Logo"
+        />
         <NavLink
           replace
           to={PATHS.Home.path}
