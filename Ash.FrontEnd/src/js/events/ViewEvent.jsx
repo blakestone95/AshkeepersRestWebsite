@@ -8,10 +8,12 @@ function ViewEvent(props) {
     },
   } = props;
   const eventConf = {
-    path: `/api/events/${eventId}`,
+    event: {
+      path: `/api/events/${eventId}`,
+    },
   };
 
-  const event = useFido(eventConf);
+  const { event } = useFido(eventConf);
 
   if (!event.data) return <div>Loading...</div>;
   if (event.fail) return <div>Error loading</div>;
