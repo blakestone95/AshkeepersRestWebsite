@@ -26,7 +26,7 @@ module.exports = (env, argv) => {
   return {
     mode: isProduction ? 'production' : 'development',
     context: path.join(__dirname, '/src'),
-    entry: ['@babel/polyfill', './js/index.jsx'],
+    entry: ['./js/index.jsx'],
     output: {
       filename: 'js/bundle.[hash].js',
       path: BUNDLE_OUTPUT_PATH,

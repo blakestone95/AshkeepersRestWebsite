@@ -1,27 +1,25 @@
 import React from 'react';
-import { Fido } from 'global/components';
+import { useFido, SectionTile } from 'global/components';
 
-const fetchItems = {
-  event: {
-    // TODO: changeover path when endpoints are written
-    path: '/api/events', //`api/events/${eventId}`,
-  },
-};
+function ViewEvent(props) {
+  const {
+    match: {
+      params: { eventId },
+    },
+  } = props;
+  const eventConf = {
+    event: {
+      path: `/api/events/${eventId}`,
+    },
+  };
 
-const toRender = fetches => {
-  return <div>{JSON.stringify(fetches.event.data)}</div>;
-};
+  const { event } = useFido(eventConf);
 
-class ViewEvent extends React.Component {
-  render() {
-    const {
-      match: {
-        params: { eventId },
-      },
-    } = this.props;
+  if (!event.data) return <div>Loading...</div>;
+  if (event.fail) return <div>Error loading</div>;
 
-    return <Fido fetchConfigs={fetchItems} render={toRender} />;
-  }
+  const { title, content } = event.data.Event;
+  return <SectionTile heading={title} text={content} />;
 }
 
 export default ViewEvent;

@@ -1,15 +1,14 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
-export default class SectionTile extends PureComponent {
-  render() {
-    const { title, text } = this.props;
-    return (
-      <section className="ash-section">
-        <div>
-          <h1>{title}</h1>
-          <p>{text}</p>
-        </div>
-      </section>
-    );
-  }
-}
+export default React.memo(function SectionTile(props) {
+  const { heading, text } = props;
+
+  return (
+    <section className="ash-section">
+      <div>
+        <h1>{heading}</h1>
+        <p>{text}</p>
+      </div>
+    </section>
+  );
+});

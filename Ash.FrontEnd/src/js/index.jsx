@@ -1,4 +1,6 @@
-/* eslint-disable */
+// Import polyfills
+import 'core-js';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
