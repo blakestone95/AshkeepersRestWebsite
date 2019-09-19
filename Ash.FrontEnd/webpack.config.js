@@ -2,9 +2,9 @@
 const webpack = require('webpack');
 const path = require('path');
 
-const WebappWebpackPlugin = require('webapp-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env, argv) => {
@@ -86,7 +86,7 @@ module.exports = (env, argv) => {
       },
     },
     plugins: [
-      new WebappWebpackPlugin({
+      new FaviconsWebpackPlugin({
         logo: 'img/Ashkeepers_Rest_Small.png',
         cache: true,
         prefix: 'img',

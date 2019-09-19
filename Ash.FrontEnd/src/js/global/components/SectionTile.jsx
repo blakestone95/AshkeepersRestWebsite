@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default React.memo(function SectionTile(props) {
+const SectionTile = props => {
   const { heading, text } = props;
 
   return (
@@ -11,4 +11,8 @@ export default React.memo(function SectionTile(props) {
       </div>
     </section>
   );
-});
+};
+
+// NOTE: Using React.memo here due to a bug in the react eslint plugin
+//   giving a false-positive: https://github.com/yannickcr/eslint-plugin-react/issues/2324
+export default React.memo(SectionTile);
