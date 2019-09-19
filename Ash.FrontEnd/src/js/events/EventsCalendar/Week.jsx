@@ -1,6 +1,6 @@
 import React from 'react';
 import Day from './Day';
-import moment from 'moment';
+
 class Week extends React.PureComponent {
   state = {
     month: this.props.month,

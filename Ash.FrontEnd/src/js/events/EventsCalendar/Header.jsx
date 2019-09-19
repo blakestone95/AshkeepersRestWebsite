@@ -1,7 +1,9 @@
 import React from 'react';
-import moment from 'moment';
-import ChevronLeftIcon from 'mdi-react/ChevronLeftIcon';
-import ChevronRightIcon from 'mdi-react/ChevronRightIcon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faChevronRight,
+  faChevronLeft,
+} from '@fortawesome/free-solid-svg-icons';
 
 class Header extends React.PureComponent {
   state = {
@@ -18,8 +20,9 @@ class Header extends React.PureComponent {
     return (
       <div className="header row flex-middle">
         <div>
-          <ChevronLeftIcon
+          <FontAwesomeIcon
             className="column column-end"
+            icon={faChevronLeft}
             onClick={this.previousMonth(month)}
           />
         </div>
@@ -27,8 +30,9 @@ class Header extends React.PureComponent {
           <span>{month.format('MMMM YYYY')}</span>
         </div>
         <div>
-          <ChevronRightIcon
+          <FontAwesomeIcon
             className="column column-end"
+            icon={faChevronRight}
             onClick={this.nextMonth(month)}
           />
         </div>

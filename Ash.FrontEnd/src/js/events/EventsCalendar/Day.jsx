@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import CalendarEvent from './CalendarEvent';
 
 const FakeData = [
@@ -28,13 +27,7 @@ class Day extends React.PureComponent {
   render() {
     const { date } = this.state;
     let formattedDate = date.clone().format('D');
-    const day = {
-      name: date.format('ddd'),
-      number: date.date(),
-      date: date,
-    };
-    var tomorrow = date.clone().add(1, 'd');
-    var yesterday = date.clone().subtract(1, 'd');
+
     return (
       <div>
         <span className="number">{formattedDate}</span>
