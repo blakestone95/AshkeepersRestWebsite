@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import { PATHS } from 'util/paths';
 
 export default class CalendarEvent extends React.Component {
