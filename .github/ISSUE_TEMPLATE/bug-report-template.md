@@ -1,6 +1,9 @@
 ---
 name: Bug Report Template
 about: Report Bugs and give steps to reproduce
+title: ''
+labels: bug
+assignees: ''
 
 ---
 

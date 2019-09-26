@@ -1,6 +1,9 @@
 ---
 name: Feature Template
 about: Describe the feature that is needed and the required criteria for completion
+title: ''
+labels: enhancement
+assignees: ''
 
 ---
 
@@ -13,6 +16,6 @@ Acceptance Criteria:
 - No periods needed at the end of bullets
   - If you feel like you need more than one sentence, use sub-bullets if possible
 
-Dependencies:
+References to other Issues:
 If you have any dependencies on other issues, put them here.  For example:
 #1, #2
