@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,6 @@ Route::resource('announcements', 'AnnouncementsController')->except('create', 'e
 
 Route::resource('events', 'EventsController')->except('create', 'edit');
 
-Route::fallback(function(){
+Route::fallback(function() {
     return response()->json(['message' => 'Not Found!'], 404);
 })->name('fallback');
