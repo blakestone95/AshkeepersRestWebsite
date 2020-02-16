@@ -55,5 +55,7 @@ services:
       - ./php/dev.ini:/usr/local/etc/php/conf.d/local.ini
     ports:
       - "9000:9000"
+      # For stupid webpack having it's own webserver for development
+      - "8000:8000"
     networks:
       - ashkeepers-rest
