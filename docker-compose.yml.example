@@ -1,0 +1,61 @@
+version: '3'
+
+networks:
+  ashkeepers-rest:
+    driver: bridge
+
+services:
+  webserver:
+    image: nginx:1-alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - ashkeepers-rest
+  mariadb:
+    image: yobasystems/alpine-mariadb:latest
+    container_name: mariadb
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: SuperSecretP4ssw0rd!
+      MYSQL_DATABASE: ashkeepersrestwebsite
+      MYSQL_USER: web
+      MYSQL_PASSWORD: secret
+    networks:
+      - ashkeepers-rest
+  dbadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: dbadmin
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: SuperSecretP4ssw0rd!
+    networks:
+      - ashkeepers-rest
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api
+    volumes:
+      - ./src:/var/www
+      - ./php/dev.ini:/usr/local/etc/php/conf.d/local.ini
+    ports:
+      - "9000:9000"
+      # For stupid webpack having it's own webserver for development
+      - "8000:8000"
+    networks:
+      - ashkeepers-rest

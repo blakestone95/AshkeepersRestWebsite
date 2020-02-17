@@ -1,0 +1,5 @@
+# In case people don't have core.autocrlf set
+* text=auto
+
+# Bash scripts that always needs to be LF
+*.sh text eol=lf

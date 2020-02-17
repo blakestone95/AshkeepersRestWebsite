@@ -12,16 +12,9 @@ module.exports = (env, argv) => {
   const { p: isProduction } = argv;
 
   // --- Set up paths ---
-  const HTML_OUTPUT_PATH = isProduction
-    ? path.resolve('../Ash.Backend/resources/views')
-    : '';
-  const HTML_OUTPUT_FILE = path.join(
-    HTML_OUTPUT_PATH,
-    isProduction ? 'index.blade.php' : 'index.html'
-  );
-  const BUNDLE_OUTPUT_PATH = path.resolve(
-    isProduction ? '../Ash.Backend/public' : './build'
-  );
+  const HTML_OUTPUT_PATH = '';
+  const HTML_OUTPUT_FILE = path.join(HTML_OUTPUT_PATH, 'index.html');
+  const BUNDLE_OUTPUT_PATH = path.resolve('./dist');
 
   return {
     mode: isProduction ? 'production' : 'development',
@@ -78,9 +71,11 @@ module.exports = (env, argv) => {
     devServer: {
       publicPath: '/',
       historyApiFallback: true,
+      port: 8000, // For docker container
+      // NOTE: for running in docker, ensure dev server is accessible to the ouside world: https://dev.to/azawakh/don-t-forget-to-give-host-0-0-0-0-to-the-startup-option-of-webpack-dev-server-using-docker-1483
       proxy: {
         '/api': {
-          target: 'http://localhost:8000',
+          target: 'http://localhost:8080',
           secure: false,
         },
       },
@@ -106,17 +101,7 @@ module.exports = (env, argv) => {
           },
         },
       }),
-      new CleanWebpackPlugin({
-        // Following settings are required to clean html webpack plugin output
-        dangerouslyAllowCleanPatternsOutsideProject: true,
-        dry: false,
-        cleanOnceBeforeBuildPatterns: [
-          'js/**/*',
-          'img/**/*',
-          'css/**/*',
-          HTML_OUTPUT_FILE,
-        ],
-      }),
+      new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         filename: HTML_OUTPUT_FILE,
         template: 'index.html',
