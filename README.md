@@ -70,9 +70,9 @@ The current structure can be seen in the [docker-compose.yml](docker-compose.yml
   - Serves frontend from the root `/` and backend routes from `/api/`
 - mariadb: This container holds a MariaDB database for backend usage to store data
   - Runs on port 3306 (default)
-- dbadmin: This is a phpPGgAdmin interface for the MariaDB database
+- dbadmin: This is a phpMyAdmin interface for the MariaDB database
   - Runs on port 8081 (default) - [http://localhost:8081](http://localhost:8081)
-- api: This container holds a php-fpm server that processes all backend php files
+- api: This container holds a Laravel PHP server that processes all backend requests
 
 ### Common/Useful Commands
 
