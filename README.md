@@ -126,6 +126,8 @@ Must be done for each new setup
    - Note: Opening a VS Code window to this folder will start a Powershell terminal there too (default terminal is powershell, this is configurable)
 2. Run `npm install` to install Node dependencies
    - Dependencies stored in `node_modules` folder in the same directory where the command is run
+3. Run `npm run add-hooks` to copy this project's git hooks into git's folder
+   - We previously used `husky` to automate this, but it doesn't work correctly with docker, so legacy setup requires this manual step
 
 ## Running the Front End
 

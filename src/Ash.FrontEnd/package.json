@@ -14,7 +14,10 @@
     "watch": "webpack-dev-server --color --progress --host 0.0.0.0",
     "build": "webpack -p",
     "build-dev": "webpack --progress",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "precommit": "lint-staged",
+    "add-hooks": "shx cp -r ../githooks/* ../../.git/hooks/",
+    "add-hooks-docker": "shx cp -r ../githooks/* ../.git/hooks/"
   },
   "repository": {
     "type": "git",
@@ -24,11 +27,6 @@
     "url": "https://github.com/blakestone95/AshkeepersRestWebsite/issues"
   },
   "homepage": "https://github.com/blakestone95/AshkeepersRestWebsite#readme",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "*.{js,jsx}": [
       "prettier --write",
@@ -72,12 +70,12 @@
     "favicons-webpack-plugin": "^1.0.2",
     "file-loader": "^4.2.0",
     "html-webpack-plugin": "^3.2.0",
-    "husky": "^3.0.5",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "lint-staged": "^9.2.5",
     "mini-css-extract-plugin": "^0.8.0",
     "prettier": "^1.18.2",
+    "shx": "^0.3.2",
     "style-loader": "^1.0.0",
     "webpack": "^4.40.2",
     "webpack-cli": "^3.3.9",

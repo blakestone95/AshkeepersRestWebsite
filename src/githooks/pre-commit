@@ -1,0 +1,13 @@
+#!/bin/sh
+# Workaround for running lint-staged without husky, as husky doesn't play nice with a dockerized project
+
+if [ "$(command -v docker)" ]; then
+  # Ensure the containers are running
+  if [ ! "$(docker ps -q -f name=api)" ]; then
+    docker-compose up -d
+  fi
+
+  docker exec api bash -c "cd ./Ash.FrontEnd && npm run precommit"
+else
+  cd ./src/Ash.FrontEnd && npm run precommit
+fi
