@@ -34,8 +34,8 @@ RUN groupadd -g 1000 www && \
     useradd -u 1000 -ms /bin/bash -g www www
 
 # Copy existing application directory permissions
-COPY --chown=www:www src/ ${WORKDIR}
-COPY php/dev.ini /usr/local/etc/php/conf.d/local.ini
+COPY --chown=www:www Ash.BackEnd/ ${WORKDIR}/Ash.BackEnd
+COPY --chown=www:www Ash.FrontEnd/ ${WORKDIR}/Ash.FrontEnd
 
 # Change current user to www
 USER www

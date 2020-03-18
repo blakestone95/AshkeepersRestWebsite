@@ -16,7 +16,8 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./src:/var/www
+      - ./Ash.BackEnd:/var/www/Ash.BackEnd
+      - ./Ash.FrontEnd/dist:/var/www/Ash.FrontEnd/dist
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
       - ashkeepers-rest
@@ -56,11 +57,13 @@ services:
       dockerfile: Dockerfile
     container_name: api
     volumes:
-      - ./src:/var/www
+      - ./Ash.BackEnd:/var/www/Ash.BackEnd
+      - ./Ash.FrontEnd:/var/www/Ash.FrontEnd
+      - ./.git:/var/www/.git
       - ./php/dev.ini:/usr/local/etc/php/conf.d/local.ini
     ports:
       - "9000:9000"
-      # For stupid webpack having it's own webserver for development
+      # For webpack having it's own webserver for development
       - "8000:8000"
     networks:
       - ashkeepers-rest
