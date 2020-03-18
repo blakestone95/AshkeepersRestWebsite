@@ -75,7 +75,9 @@ module.exports = (env, argv) => {
       // NOTE: for running in docker, ensure dev server is accessible to the ouside world: https://dev.to/azawakh/don-t-forget-to-give-host-0-0-0-0-to-the-startup-option-of-webpack-dev-server-using-docker-1483
       proxy: {
         '/api': {
-          target: 'http://localhost:8080',
+          // Proxy to the docker network, rather than localhost
+          // For legacy setup, you must set this manually
+          target: 'http://webserver:80',
           secure: false,
         },
       },
