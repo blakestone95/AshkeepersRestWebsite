@@ -29,13 +29,12 @@ RUN docker-php-ext-install pdo \
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Add user for application and create source directories
-RUN groupadd -g 1000 www && \
-    useradd -u 1000 -ms /bin/bash -g www www
-
+# Add user for application and create source directories and
 # Copy existing application directory permissions
-COPY --chown=www:www Ash.BackEnd/ ${WORKDIR}/Ash.BackEnd
-COPY --chown=www:www Ash.FrontEnd/ ${WORKDIR}/Ash.FrontEnd
+RUN groupadd -g 1000 www && \
+    useradd -u 1000 -ms /bin/bash -g www www && \
+    rm -r ${PROJECT_DIR}/html && \
+    chown -R www:www ${PROJECT_DIR}
 
 # Change current user to www
 USER www
