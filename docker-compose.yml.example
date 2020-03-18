@@ -1,8 +1,11 @@
-version: '3'
+version: '3.7'
 
 networks:
   ashkeepers-rest:
     driver: bridge
+
+volumes:
+  db-data:
 
 services:
   webserver:
@@ -24,6 +27,8 @@ services:
     tty: true
     ports:
       - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: SuperSecretP4ssw0rd!
       MYSQL_DATABASE: ashkeepersrestwebsite
