@@ -59,6 +59,7 @@ services:
     volumes:
       - ./Ash.BackEnd:/var/www/Ash.BackEnd
       - ./Ash.FrontEnd:/var/www/Ash.FrontEnd
+      - ./install-dev.sh:/var/www/install-dev.sh
       - ./.git:/var/www/.git
       - ./php/dev.ini:/usr/local/etc/php/conf.d/local.ini
     ports:
