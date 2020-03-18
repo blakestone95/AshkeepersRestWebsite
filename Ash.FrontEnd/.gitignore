@@ -64,8 +64,6 @@ typings/
 .next
 
 ## Additions
-# dist dir
-dist/
 
 # yarn lock file (we're officially using npm, but yarn can be used without messing anyone up)
 yarn.lock
