@@ -34,6 +34,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN groupadd -g 1000 www && \
     useradd -u 1000 -ms /bin/bash -g www www && \
     rm -r ${PROJECT_DIR}/html && \
+    mkdir -p ${PROJECT_DIR}/Ash.FrontEnd/dist ${PROJECT_DIR}/Ash.BackEnd ${PROJECT_DIR}/.git && \
     chown -R www:www ${PROJECT_DIR}
 
 # Change current user to www
