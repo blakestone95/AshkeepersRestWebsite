@@ -17,4 +17,4 @@ cd Ash.BackEnd || exit
 composer install
 
 # configure the backend
-./configure.sh
+bash configure.sh
