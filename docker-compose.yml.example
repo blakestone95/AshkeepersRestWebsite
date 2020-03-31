@@ -6,6 +6,8 @@ networks:
 
 volumes:
   db-data:
+  server-deps:
+  front-end-deps:
 
 services:
   webserver:
@@ -58,10 +60,17 @@ services:
     container_name: api
     volumes:
       - ./Ash.BackEnd:/var/www/Ash.BackEnd
-      - ./Ash.FrontEnd:/var/www/Ash.FrontEnd
-      - ./install-dev.sh:/var/www/install-dev.sh
-      - ./.git:/var/www/.git
+      # keeps php dependencies inside the container and prevents us from losing it between restarts
+      - server-deps:/var/www/Ash.BackEnd/vendor
       - ./php/dev.ini:/usr/local/etc/php/conf.d/local.ini
+
+      - ./Ash.FrontEnd:/var/www/Ash.FrontEnd
+      # keeps node dependencies inside the container and prevents us from losing it between restarts
+      - front-end-deps:/var/www/Ash.FrontEnd/node_modules
+
+      - ./install-dev.sh:/var/www/install-dev.sh
+      - ./githooks:/var/www/githooks
+      - ./.git:/var/www/.git
     ports:
       - "9000:9000"
       # For webpack having it's own webserver for development

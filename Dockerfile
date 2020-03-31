@@ -14,7 +14,8 @@ RUN apk update && apk add --no-cache \
     shadow \
     bash-completion \
     vim \
-    npm && \
+    npm \ 
+    git && \
     apk add --no-cache $PHPIZE_DEPS && \
     pecl install xdebug && \
     docker-php-ext-enable xdebug
@@ -29,16 +30,26 @@ RUN docker-php-ext-install pdo \
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Add user for application and create source directories and
-# Copy existing application directory permissions
-RUN groupadd -g 1000 www && \
-    useradd -u 1000 -ms /bin/bash -g www www && \
-    rm -r ${PROJECT_DIR}/html && \
-    mkdir -p ${PROJECT_DIR}/Ash.FrontEnd/dist ${PROJECT_DIR}/Ash.BackEnd ${PROJECT_DIR}/.git && \
-    chown -R www:www ${PROJECT_DIR}
+# Add user to run server
+# RUN groupadd -g 1000 www && \
+#     useradd -u 1000 -ms /bin/bash -g www www
+
+# Remove unused directory
+RUN rm -r ${PROJECT_DIR}/html
+
+# Make node_modules work right
+ENV NODE_PATH=/var/www/Ash.FrontEnd/node_modules/.bin
+
+# Copy source directories and existing application directory permissions
+# add --chown=www:www option if you can get user working properly
+COPY Ash.BackEnd/ ${WORKDIR}/Ash.BackEnd
+COPY Ash.FrontEnd/ ${WORKDIR}/Ash.FrontEnd
+COPY install-dev.sh ${WORKDIR}/install-dev.sh
+COPY githooks ${WORKDIR}/githooks
+COPY .git ${WORKDIR}/.git
 
 # Change current user to www
-USER www
+# USER www
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000

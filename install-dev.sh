@@ -5,7 +5,7 @@ cd Ash.FrontEnd || exit
 npm install
 
 # Add precommit hooks
-npm run add-precommit-docker
+npm run add-hooks-docker
 
 # Initial front end build so that app can run immediately
 npm run build
