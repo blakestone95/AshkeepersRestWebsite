@@ -20,11 +20,17 @@ COPY --chown=node:node . ${WORKDIR}/client
 # COPY --chown=node:node ../githooks ${WORKDIR}/githooks
 # COPY --chown=node:node ../.git ${WORKDIR}/.git
 
-# Correct permissions for node_modules
+# Create node_module mount point
 RUN mkdir -p ${PROJECT_DIR}/client/node_modules \
   && chown node:node -R ${PROJECT_DIR}/client/node_modules \
   && chmod 777 -R ${PROJECT_DIR}/client/node_modules
 VOLUME [ "${PROJECT_DIR}/client/node_modules" ]
+
+# Create built files mount point
+RUN mkdir -p ${PROJECT_DIR}/client/dist \
+  && chown node:node -R ${PROJECT_DIR}/client/dist \
+  && chmod 777 -R ${PROJECT_DIR}/client/dist
+VOLUME [ "${PROJECT_DIR}/client/dist" ]
 
 # Change current user to node (recommended)
 USER node

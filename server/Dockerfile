@@ -38,7 +38,7 @@ RUN rm -r ${PROJECT_DIR}/html
 # add --chown=www:www option if you can get user working properly
 COPY --chown=www:www . ${WORKDIR}/server
 
-# Correct permission for vendor
+# Create vendor mount point
 RUN mkdir -p ${PROJECT_DIR}/server/vendor \
   && chown www:www -R ${PROJECT_DIR}/server/vendor \
   && chmod 777 -R ${PROJECT_DIR}/server/vendor
