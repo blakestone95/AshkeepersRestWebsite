@@ -18,8 +18,8 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./Ash.BackEnd:/var/www/Ash.BackEnd
-      - ./Ash.FrontEnd/dist:/var/www/Ash.FrontEnd/dist
+      - ./server:/var/www/server
+      - ./client/dist:/var/www/client/dist
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
       - ashkeepers-rest
@@ -55,25 +55,34 @@ services:
       - ashkeepers-rest
   api:
     build:
-      context: .
+      context: ./server
       dockerfile: Dockerfile
     container_name: api
     volumes:
-      - ./Ash.BackEnd:/var/www/Ash.BackEnd
+      - ./server:/var/www/server
       # keeps php dependencies inside the container and prevents us from losing it between restarts
-      - server-deps:/var/www/Ash.BackEnd/vendor
-      - ./php/dev.ini:/usr/local/etc/php/conf.d/local.ini
-
-      - ./Ash.FrontEnd:/var/www/Ash.FrontEnd
-      # keeps node dependencies inside the container and prevents us from losing it between restarts
-      - front-end-deps:/var/www/Ash.FrontEnd/node_modules
-
-      - ./install-dev.sh:/var/www/install-dev.sh
-      - ./githooks:/var/www/githooks
-      - ./.git:/var/www/.git
+      - server-deps:/var/www/server/vendor
+      - ./server/php/dev.ini:/usr/local/etc/php/conf.d/local.ini
     ports:
       - "9000:9000"
-      # For webpack having it's own webserver for development
+    networks:
+      - ashkeepers-rest
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+      # Use the production dockerfile if you are only working on the api server
+      #dockerfile: Dockerfile
+    container_name: client
+    tty: true
+    volumes:
+      - ./client:/home/node/client
+      # keeps node dependencies inside the container and prevents us from losing it between restarts
+      - front-end-deps:/home/node/client/node_modules
+
+      # - ./githooks:/home/node/githooks
+      # - ./.git:/home/node/.git
+    ports:
       - "8000:8000"
     networks:
       - ashkeepers-rest

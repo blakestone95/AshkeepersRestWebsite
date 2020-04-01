@@ -1,0 +1,34 @@
+FROM node:12-alpine
+
+# If we need to use node-gyp to build anything: https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md#node-gyp-alpine
+
+# Install dependencies
+RUN apk update && apk add --no-cache \
+    bash \
+    git
+
+# Set working directory
+ENV PROJECT_DIR /home/node
+WORKDIR ${PROJECT_DIR}
+
+# Set up node variables
+ENV NODE_ENV development
+# ENV NODE_PATH ${PROJECT_DIR}/client/node_modules/.bin
+
+# Copy source directories
+COPY --chown=node:node . ${WORKDIR}/client
+# COPY --chown=node:node ../githooks ${WORKDIR}/githooks
+# COPY --chown=node:node ../.git ${WORKDIR}/.git
+
+# Correct permissions for node_modules
+RUN mkdir -p ${PROJECT_DIR}/client/node_modules \
+  && chown node:node -R ${PROJECT_DIR}/client/node_modules \
+  && chmod 777 -R ${PROJECT_DIR}/client/node_modules
+VOLUME [ "${PROJECT_DIR}/client/node_modules" ]
+
+# Change current user to node (recommended)
+USER node
+
+# Expose port for webpack-dev-server
+EXPOSE 8000
+CMD ["/bin/bash"]
