@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { PATHS } from 'util/paths';
+import { PATHS } from 'Routing';
 import 'img/Ashkeepers_Rest_SVG_Logo_v1.svg';
 
 class NavBar extends React.Component {

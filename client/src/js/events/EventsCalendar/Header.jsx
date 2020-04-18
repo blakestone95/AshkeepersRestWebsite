@@ -9,10 +9,10 @@ class Header extends React.PureComponent {
   state = {
     month: this.props.current,
   };
-  previousMonth = month => () => {
+  previousMonth = (month) => () => {
     this.setState({ month: month.subtract(1, 'M') });
   };
-  nextMonth = month => () => {
+  nextMonth = (month) => () => {
     this.setState({ month: month.add(1, 'M') });
   };
   render() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFido, SectionTile } from 'global/components';
+import { useFido, SectionTile } from 'components';
 
 function ViewEvent(props) {
   const {

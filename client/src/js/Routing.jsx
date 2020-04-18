@@ -1,52 +1,76 @@
-import Home from 'Home';
+import React from 'react';
+import { Route, Redirect, Switch } from 'react-router-dom';
+
+import Home from 'home/Home';
 import AnnouncementBoard from 'announcements/AnnouncementBoard';
 import CreateAnnouncement from 'announcements/CreateAnnouncement';
 import ViewAnnouncement from 'announcements/ViewAnnouncement';
 import EventsBoard from 'events/EventsBoard';
-import EventsCalendar from 'events/EventsCalendar';
+import EventsCalendar from 'events/eventsCalendar';
 import CreateEvent from 'events/CreateEvent';
 import ViewEvent from 'events/ViewEvent';
 
 export const PATHS = {
   Home: {
-    path: '/Home',
+    path: '/home',
     component: Home,
     display: 'Home',
   },
   AnnouncementBoard: {
-    path: '/Announcements',
+    path: '/announcements',
     component: AnnouncementBoard,
     display: 'Announcements Board',
   },
   CreateAnnouncement: {
-    path: '/Announcements/Create',
+    path: '/announcements/create',
     component: CreateAnnouncement,
     display: 'Create Announcement',
   },
   ViewAnnouncement: {
-    path: '/Announcements/View',
+    path: '/announcements/view',
     component: ViewAnnouncement,
     display: 'View Announcement',
   },
   EventsBoard: {
-    path: '/Events',
+    path: '/events',
     component: EventsBoard,
     display: 'Events Board',
   },
   EventsCalendar: {
-    path: '/Events/Calendar',
+    path: '/events/calendar',
     component: EventsCalendar,
     display: 'Events Calendar',
   },
   CreateEvent: {
-    path: '/Events/Create',
+    path: '/events/create',
     component: CreateEvent,
     display: 'Create Event',
   },
   ViewEvent: {
-    path: '/Events/View',
+    path: '/events/view',
     params: '/:eventId',
     component: ViewEvent,
     display: 'View Event',
   },
 };
+
+const routes = Object.values(PATHS).map((pathObj) => (
+  <Route
+    exact
+    path={pathObj.path + (pathObj.params ? pathObj.params : '')}
+    component={pathObj.component}
+    key={pathObj.display}
+  />
+));
+
+function Routing() {
+  return (
+    <Switch>
+      <Redirect exact from="/" to={PATHS.Home.path} />
+
+      {routes}
+    </Switch>
+  );
+}
+
+export default Routing;

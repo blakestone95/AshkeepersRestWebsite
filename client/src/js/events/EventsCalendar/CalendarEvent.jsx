@@ -1,5 +1,5 @@
 import React from 'react';
-import { PATHS } from 'util/paths';
+import { PATHS } from 'Routing';
 
 export default class CalendarEvent extends React.Component {
   render() {
