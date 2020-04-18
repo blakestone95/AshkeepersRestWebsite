@@ -3,11 +3,9 @@
 
 if [ "$(command -v docker)" ]; then
   # Ensure the containers are running
-  if [ ! "$(docker ps -q -f name=api)" ]; then
-    docker-compose up -d
-  fi
+  docker-compose ps -q client || docker-compose up -d
 
-  docker exec api bash -c "cd ./Ash.FrontEnd && npm run precommit"
+  docker exec client bash -c "cd ./client && npm run precommit"
 else
-  cd ./src/Ash.FrontEnd && npm run precommit
+  cd ./client && npm run precommit
 fi

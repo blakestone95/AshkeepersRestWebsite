@@ -78,8 +78,10 @@ services:
       - ./client/node_modules:/home/node/client/node_modules
       - ./client/dist:/home/node/client/dist
 
-      # - ./githooks:/home/node/githooks
-      # - ./.git:/home/node/.git
+      - ./.git:/home/node/.git
+    environment: 
+      # Makes git work for lint-staged because it treats the .git directory as a separate mounted drive (obviously)
+      - GIT_DISCOVERY_ACROSS_FILESYSTEM=1
     ports:
       # Exposes webpack dev server to the host
       - "8000:8000"
