@@ -6,8 +6,6 @@ networks:
 
 volumes:
   db-data:
-  server-deps:
-  front-end-deps:
 
 services:
   webserver:
@@ -19,6 +17,7 @@ services:
       - "8080:80"
     volumes:
       - ./server:/var/www/server
+      - ./server/vendor:/var/www/server/vendor
       - ./client/dist:/var/www/client/dist
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
@@ -60,8 +59,7 @@ services:
     container_name: api
     volumes:
       - ./server:/var/www/server
-      # keeps php dependencies inside the container and prevents us from losing it between restarts
-      - server-deps:/var/www/server/vendor
+      - ./server/vendor:/var/www/server/vendor
       - ./server/php/dev.ini:/usr/local/etc/php/conf.d/local.ini
     ports:
       - "9000:9000"
@@ -77,12 +75,13 @@ services:
     tty: true
     volumes:
       - ./client:/home/node/client
-      # keeps node dependencies inside the container and prevents us from losing it between restarts
-      - front-end-deps:/home/node/client/node_modules
+      - ./client/node_modules:/home/node/client/node_modules
+      - ./client/dist:/home/node/client/dist
 
       # - ./githooks:/home/node/githooks
       # - ./.git:/home/node/.git
     ports:
+      # Exposes webpack dev server to the host
       - "8000:8000"
     networks:
       - ashkeepers-rest
