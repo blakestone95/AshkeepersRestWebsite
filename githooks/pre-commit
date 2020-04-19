@@ -3,7 +3,9 @@
 
 if [ "$(command -v docker)" ]; then
   # Ensure the containers are running
-  docker-compose ps -q client || docker-compose up -d
+  if [ ! "$(docker-compose ps -q client)" ]; then
+    docker-compose up -d
+  fi
 
   docker exec client bash -c "cd ./client && npm run precommit"
 else

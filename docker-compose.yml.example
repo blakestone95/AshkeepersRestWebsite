@@ -67,21 +67,16 @@ services:
       - ashkeepers-rest
   client:
     build:
-      context: ./client
-      dockerfile: Dockerfile.dev
+      context: ./
+      dockerfile: ./client/Dockerfile.dev
       # Use the production dockerfile if you are only working on the api server
+      #context: ./client
       #dockerfile: Dockerfile
     container_name: client
     tty: true
     volumes:
-      - ./client:/home/node/client
-      - ./client/node_modules:/home/node/client/node_modules
-      - ./client/dist:/home/node/client/dist
-
-      - ./.git:/home/node/.git
-    environment: 
-      # Makes git work for lint-staged because it treats the .git directory as a separate mounted drive (obviously)
-      - GIT_DISCOVERY_ACROSS_FILESYSTEM=1
+      - ./client/node_modules:/home/node/project/client/node_modules
+      - ./:/home/node/project
     ports:
       # Exposes webpack dev server to the host
       - "8000:8000"
