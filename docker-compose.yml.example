@@ -69,6 +69,7 @@ services:
     build:
       context: ./
       dockerfile: ./client/Dockerfile.dev
+      # TODO create production Dockerfile
       # Use the production dockerfile if you are only working on the api server
       #context: ./client
       #dockerfile: Dockerfile
@@ -76,6 +77,7 @@ services:
     tty: true
     volumes:
       - ./client/node_modules:/home/node/project/client/node_modules
+      # Development mode needs access to the entire project instead of just the client files so that lint-staged works properly
       - ./:/home/node/project
     ports:
       # Exposes webpack dev server to the host

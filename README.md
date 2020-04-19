@@ -22,34 +22,50 @@ Installing the requirements is operating system dependent and is left as an exer
 
 Use whatever you want, but if you're not sure what to choose, consider [Visual Studio Code](https://code.visualstudio.com/) (VS Code). This is a fancy text editor that supports a rich development experience for JavaScript while still trying to be as lightweight as possible. While it doesn't need any plugins to be useful right out of the box, there are quite a few very useful ones out there. A later section will cover some VS Code setup.
 
-### Frontend and Backend Common Instructions
+### Dev environment setup
 
 1. Copy the [docker-compose.yml.example](docker-compose.yml.example) to [docker-compose.yml](docker-compose.yml)
 
    - You can change any ports that conflict with any currently running services in [docker-compose.yml](docker-compose.yml)
-   - Ensure any changes are also reflected in the .env file that is created in step 3
+   - Ensure any changes are also reflected in the .env file that is by the install script created in step 3
+   - If you aren't doing front end development, you can use the [production client Dockerfile](client/Dockerfile) in your local [docker-compose.yml](docker-compose.yml) as it is faster and lighterweight
 
-1. Spin up the docker containers with the docker compose command `docker-compose up -d` in the folder where the [docker-compose.yml](docker-compose.yml) file is located
+1. Spin up the docker containers with the docker compose command in the folder where the [docker-compose.yml](docker-compose.yml) file is located
+
+   `docker-compose up -d --build`
 
    - The first run will take a while as the containers need to be built but subsequent runs should be fast
+   - You can use `docker-compose up -d` when you don't need to build the containers
 
-1. Run the install script to setup the front and back end via the command `docker-compose exec api ./install-dev.sh`
+1. Run the server install script to setup Laravel
 
-   - This installs PHP and JS dependencies and performs any other necessary operations, such as initializing the DB
+   `docker-compose exec api ./install-dev.sh`
+
+   - This installs PHP dependencies and seeds the database
    - You can rerun this command to revert the dev environment to it's default state
 
-### API Specific Development Installation
+1. Run the front end install command to setup React
 
-The backend api should now be installed and running on [http://localhost:8080/api/](http://localhost:8080/api/) (The trailing slash is important because otherwise nginx running in the docker container won't redirect the port correctly because the docker contianer port and the host port it's mapped to are different. So you will end up at `http://localhost/api`)
+   `docker-compose exec client bash -c "cd ./client && npm install"`
 
-### Frontend Specific Development Installation
+   - This installs JS dependencies and also loads any git hooks defined in [githooks](githooks) with a postinstall script
+   - Use the follow command instead if you are using the production build:
 
-The install script will automatically run the front end build script and the site can be visited at [http://localhost:8080](http://localhost:8080).
-The front end can also be run in development mode by following these steps:
+   `docker-compose exec client bash -c "cd ./client && npm install && npm build"`
+
+### API Server
+
+The api server should now be installed and running on [http://localhost:8080/api/](http://localhost:8080/api/) (The trailing slash is important because otherwise nginx running in the docker container won't redirect the port correctly because the docker contianer port and the host port it's mapped to are different. So you will end up at `http://localhost/api`)
+
+### React Front End
+
+#### development
+
+The development build is the default configuration. To run the project, do the following:
 
 1. Enter the bash shell of the api container with `docker-compose exec api bash`
-1. Move to the front end directory with `cd Ash.FrontEnd`
-1. Run `npm run watch` to run webpack dev server
+1. Move to the front end directory with `cd client`
+1. Run `npm start` to run webpack dev server
 1. Access the dev site on [http://localhost:8000](http://localhost:8000) (rather than port 8080)
 
 In development mode, you gain the following benefits:
@@ -59,20 +75,28 @@ In development mode, you gain the following benefits:
 - All built files are stored in memory and are never written to disk, reducing I/O time on builds
 - Hot reloading (once we set it up) - _need more info_
 
+#### production
+
+If choosing to use only the production build, no additional setup is needed. The site can be visited at [http://localhost:8080](http://localhost:8080).
+
 ## Docker usage
 
 ### Current Structure
 
-The current structure can be seen in the [docker-compose.yml](docker-compose.yml). The containers are as follows:
+The current structure can be seen in the [docker-compose.yml](docker-compose.yml) file. Folowing are descriptions of and notes for the containers:
 
-- webserver: This container holds the nginx server that serves up the webserver files to your local machine
+- webserver: nginx server that serves up the webserver files to your local machine
   - Runs on port 8080 (default) - [http://localhost:8080](http://localhost:8080)
-  - Serves frontend from the root `/` and backend routes from `/api/`
-- mariadb: This container holds a MariaDB database for backend usage to store data
+  - Serves front end from the root `/` (when in production mode) and backend routes from `/api/`
+- mariadb: MariaDB database to store user-generated content, etc.
   - Runs on port 3306 (default)
-- dbadmin: This is a phpMyAdmin interface for the MariaDB database
+- dbadmin: phpMyAdmin interface for the MariaDB database
   - Runs on port 8081 (default) - [http://localhost:8081](http://localhost:8081)
-- api: This container holds a Laravel PHP server that processes all backend requests
+- api: Laravel PHP server that provides data from the database, etc. for the front end
+- client: provides built React front end files to be served to the browser
+  - Development configuration runs on port 8000 (default) - [http://localhost:8000](http://localhost:8000)
+    - NOTE: Development mode requires access to the entire project in order for the `lint-staged` package to perform it job properly
+  - Production mode writes the built files to disk, which the webserver container will pick up
 
 ### Common/Useful Commands
 
@@ -122,12 +146,12 @@ Useful plugins:
 
 Must be done for each new setup
 
-1. In a terminal (CMD, Powershell, or a Unix terminal emulator), navigate to the Ash.FrontEnd directory
+1. In a terminal (CMD, Powershell, or a Unix terminal emulator), navigate to the client directory
    - Note: Opening a VS Code window to this folder will start a Powershell terminal there too (default terminal is powershell, this is configurable)
-2. Run `npm install` to install Node dependencies
+1. Run `npm install` to install Node dependencies
    - Dependencies stored in `node_modules` folder in the same directory where the command is run
-3. Run `npm run add-hooks` to copy this project's git hooks into git's folder
-   - We previously used `husky` to automate this, but it doesn't work correctly with docker, so legacy setup requires this manual step
+   - The postinstall script will also apply our git hooks to the project
+     - We previously used `husky` to automate this, but it doesn't work correctly with docker
 
 ## Running the Front End
 
@@ -144,45 +168,45 @@ Must be done for each new setup
 It is assumed MySQL Server Community Edition Installer has already been downloaded
 
 1. Run the installer.
-2. Accept the license agreement.
-3. Choose the setup type you want. Recommended setup type is Developer Default (If you want something more lightweight, you can install products from GA servers only.)
-4. Install those products on the next screen.
-5. In the product configuration leave everything default unless otherwise specifically mentioned.
-6. In the authentication method configuration, select the use legacy authentication method option.
-7. When you get to accounts and roles pick a good password for root. You can use this account for the application in your development environment although it is not recommended to run everything on root in production
-8. Keep going using default settings until the finish.
-9. Installation should now be finished.
-10. Open up a MySQL Command Line Client, type in the root password, and enter in the following command
+1. Accept the license agreement.
+1. Choose the setup type you want. Recommended setup type is Developer Default (If you want something more lightweight, you can install products from GA servers only.)
+1. Install those products on the next screen.
+1. In the product configuration leave everything default unless otherwise specifically mentioned.
+1. In the authentication method configuration, select the use legacy authentication method option.
+1. When you get to accounts and roles pick a good password for root. You can use this account for the application in your development environment although it is not recommended to run everything on root in production
+1. Keep going using default settings until the finish.
+1. Installation should now be finished.
+1. Open up a MySQL Command Line Client, type in the root password, and enter in the following command
     `CREATE DATABASE ashkeepersrestwebsite;`
 
 ### Setup PHP
 
 1. Go to your php installation directory, and copy/paste the php.ini-development as php.ini in the same folder.
-2. Open the php.ini file and change any settings you want to change in there.
-3. The following extensions should be enabled at the very least (if on windows):
+1. Open the php.ini file and change any settings you want to change in there.
+1. The following extensions should be enabled at the very least (if on windows):
    - php_mbstring.dll
    - php_openssl.dll
    - php_pdo_mysql.dll
    - php_curl.dll
    - php_fileinfo.dll
-4. If on linux, the extensions can be installed through the package manager.
+1. If on linux, the extensions can be installed through the package manager.
 
 ### Setup Laravel
 
 1. In a terminal (CMD, Powershell, or a Unix terminal), navigate to the Ash.BackEnd directory
    - Note: Opening a VS Code window to this folder will start a Powershell terminal there too (default terminal is powershell, this is configurable)
-2. Copy `.env.example` file to `.env`
+1. Copy `.env.example` file to `.env`
    - This is local and will not be committed to the repo
    - Put your previously made MySQL password into the `.env` file in the `DB_PASSWORD` entry, and if you are not using the root user, change the `DB_USERNAME` parameter appropriately as well.
-3. Run `composer install` to install php dependencies
-4. Run `php artisan key:generate` to generate a key for the Laravel server
+1. Run `composer install` to install php dependencies
+1. Run `php artisan key:generate` to generate a key for the Laravel server
 
 ## Running the Back End
 
 1. Make sure MySQL server is running
-2. Run `php artisan migrate` To scaffold any new database migrations (Do not have to do this on every run, but is a good idea after every pull)
+1. Run `php artisan migrate` To scaffold any new database migrations (Do not have to do this on every run, but is a good idea after every pull)
    - If you want to seed the database as well, add the --seed option
    - If you get a PDOException::("could not find driver") at this point, it's because you don't have your php extensions configured correctly
-3. Run `php artisan serve`
+1. Run `php artisan serve`
    - Runs a local dev server
    - PHP supports live editing, so you do not have to restart the server for every change
