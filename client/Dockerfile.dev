@@ -11,9 +11,6 @@ RUN apk update && apk add --no-cache \
 ENV PROJECT_DIR /home/node/project
 WORKDIR ${PROJECT_DIR}
 
-# Set up node variables
-ENV NODE_ENV development
-
 # Copy entire codebase
 # necessary so that we can use lint-staged properly during development
 COPY --chown=node:node . ${WORKDIR}
