@@ -85,8 +85,8 @@ module.exports = (env, argv) => {
     plugins: [
       new FaviconsWebpackPlugin({
         logo: 'img/Ashkeepers_Rest_Small.png',
+        prefix: 'img/',
         cache: true,
-        prefix: 'img',
         inject: true,
         favicons: {
           icons: {
