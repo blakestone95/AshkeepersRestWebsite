@@ -1,4 +1,5 @@
 import React from 'react';
+// TODO: Convert to functional component so we can remove memoize-one
 import memoizeOne from 'memoize-one';
 
 import { HTTP_METHODS } from './constants';
@@ -110,7 +111,7 @@ class Fido extends React.Component {
 
       // Call any new fetch configs with the fetchImmediately option set
       const configs = this.getFullConfigs();
-      Object.keys(newFetchItems).forEach(key => {
+      Object.keys(newFetchItems).forEach((key) => {
         const config = configs[key];
 
         if (config.options.fetchImmediately) {
@@ -139,7 +140,7 @@ class Fido extends React.Component {
    * @returns {object} Named config objects composed of the default config
    *    and the supplied config object
    */
-  generateFullConfigs = memoizeOne(fetchConfigs =>
+  generateFullConfigs = memoizeOne((fetchConfigs) =>
     Object.entries(fetchConfigs).reduce((fullConfigs, [key, config]) => {
       fullConfigs[key] = { ...defaultFetchConfig, ...config };
 
@@ -153,7 +154,7 @@ class Fido extends React.Component {
    * @returns {(configOverride: object) => void} accepts immediate overrides to the
    *    config object and calls the dispatchFetch method
    */
-  onCall = key => (configOverride = {}) => {
+  onCall = (key) => (configOverride = {}) => {
     const fullConfigs = this.getFullConfigs();
 
     if (!fullConfigs[key]) {
@@ -249,7 +250,7 @@ class Fido extends React.Component {
    * @param {string} key - fetch item key
    * @returns {(json: object) => void}
    */
-  setData = key => json => {
+  setData = (key) => (json) => {
     this.setFetchState(key, {
       inFlight: false,
       success: true,
@@ -264,7 +265,7 @@ class Fido extends React.Component {
    * @param {string} key - fetch item key
    * @returns {(error: object) => void}
    */
-  onFailure = key => error => {
+  onFailure = (key) => (error) => {
     // Ignore aborted fetches (don't change state)
     if (error.name === 'AbortError') {
       return;
