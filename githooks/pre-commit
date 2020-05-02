@@ -1,0 +1,13 @@
+#!/bin/sh
+# Workaround for running lint-staged without husky, as husky doesn't play nice with a dockerized project
+
+if [ "$(command -v docker)" ]; then
+  # Ensure the containers are running
+  if [ ! "$(docker-compose ps -q client)" ]; then
+    docker-compose up -d
+  fi
+
+  docker exec client bash -c "cd ./client && npm run precommit"
+else
+  cd ./client && npm run precommit
+fi

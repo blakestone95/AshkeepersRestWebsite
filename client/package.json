@@ -1,0 +1,83 @@
+{
+  "name": "ashkeepers-rest-website",
+  "version": "0.0.0",
+  "description": "Webapp for the Ashkeeper's Rest gaming community.  Intended to supplement the interactions within our Discord guild and provide services which Discord does not.  Actual features will be defined and built as we come up with more ideas.",
+  "author": "",
+  "license": "ISC",
+  "keywords": [
+    "react",
+    "webapp",
+    "gaming"
+  ],
+  "main": "index.jsx",
+  "scripts": {
+    "start": "npm run watch",
+    "watch": "webpack-dev-server --color --progress --host 0.0.0.0",
+    "build": "webpack -p",
+    "build-dev": "webpack --progress",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "precommit": "lint-staged",
+    "postinstall": "npm run add-hooks",
+    "add-hooks": "shx cp -r ../githooks/* ../.git/hooks/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blakestone95/AshkeepersRestWebsite.git"
+  },
+  "bugs": {
+    "url": "https://github.com/blakestone95/AshkeepersRestWebsite/issues"
+  },
+  "homepage": "https://github.com/blakestone95/AshkeepersRestWebsite#readme",
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,css,less,md}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.24",
+    "@fortawesome/free-solid-svg-icons": "^5.11.1",
+    "@fortawesome/react-fontawesome": "^0.1.4",
+    "core-js": "^3.2.1",
+    "history": "^4.10.1",
+    "memoize-one": "^5.1.1",
+    "moment": "^2.24.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-router-dom": "^5.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+    "@babel/preset-env": "^7.6.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.2.0",
+    "eslint": "^6.4.0",
+    "eslint-loader": "^3.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^2.0.1",
+    "favicons-webpack-plugin": "^1.0.2",
+    "file-loader": "^4.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+    "lint-staged": "^10.1.5",
+    "mini-css-extract-plugin": "^0.8.0",
+    "prettier": "^1.18.2",
+    "shx": "^0.3.2",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.1"
+  }
+}

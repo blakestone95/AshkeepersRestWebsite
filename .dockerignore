@@ -1,0 +1,3 @@
+# This dockerignore file is necessary for setting up the dev client container
+server/vendor
+client/node_modules
