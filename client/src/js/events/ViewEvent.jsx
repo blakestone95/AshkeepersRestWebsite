@@ -8,9 +8,7 @@ function ViewEvent(props) {
     },
   } = props;
   const eventConf = {
-    event: {
-      path: `/api/events/${eventId}`,
-    },
+    path: `/api/events/${eventId}`,
   };
 
   const { event } = useFido(eventConf);
