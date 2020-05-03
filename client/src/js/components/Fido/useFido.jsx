@@ -171,7 +171,8 @@ function createCall(config, abortControllerRef, dispatch) {
     if (body) headers.append('Content-Type', 'application/json');
 
     // Abort previous fetch if there is any
-    if (abortControllerRef.current) abortControllerRef.current.abort();
+    if (abortControllerRef.current instanceof AbortController)
+      abortControllerRef.current.abort();
     // Replace previously aborted (or new) AbortController
     abortControllerRef.current = newAbortController;
 
@@ -235,7 +236,9 @@ function createCall(config, abortControllerRef, dispatch) {
 
       // Always clear the abort controller when done processing the fetch
       .finally(() => {
-        delete abortControllerRef.current;
+        if (abortControllerRef.current === newAbortController) {
+          abortControllerRef.current = null;
+        }
       });
 
     // Immediately update fetch state to indicate request is in flight
