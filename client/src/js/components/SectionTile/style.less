@@ -1,23 +1,31 @@
-.ash-section {
+.ash-tile {
   margin: 16px 0;
+  padding: 20px 20px 10px 20px;
   border-radius: 10px;
   background-color: @app-foreground-color;
+  position: relative;
 
-  div {
-    padding-top: 20px;
-    padding-right: 20px;
-    padding-bottom: 10px;
-    padding-left: 20px;
+  .ash-tile-header {
+    display: flex;
+    align-items: center;
 
     h1 {
+      flex: 1 0 auto;
       margin: 0;
-      font-size: 36px;
-      font-weight: 400;
       padding-bottom: 5px;
+      border: none;
     }
 
-    p {
-      font-size: 14px;
+    .ash-tile-author {
+      flex: 0 0 auto;
     }
+  }
+
+  .ash-tile-date svg {
+    margin-right: 5px;
+  }
+
+  p {
+    font-size: 14px;
   }
 }

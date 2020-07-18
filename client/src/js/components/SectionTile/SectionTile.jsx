@@ -1,18 +1,26 @@
 import React from 'react';
+import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 
-const SectionTile = props => {
-  const { heading, text } = props;
+function SectionTile(props) {
+  const { heading, date, author, text } = props;
 
   return (
-    <section className="ash-section">
+    <section className="ash-tile">
       <div>
-        <h1>{heading}</h1>
+        <div className="ash-tile-header">
+          <h1>{heading}</h1>
+          <em className="ash-tile-author">by {author}</em>
+        </div>
+        <div className="ash-tile-date">
+          <FontAwesomeIcon icon={faCalendar} />
+          {moment(date).format('hh:mm a, MMM Do YYYY')}
+        </div>
         <p>{text}</p>
       </div>
     </section>
   );
-};
+}
 
-// NOTE: Using React.memo here due to a bug in the react eslint plugin
-//   giving a false-positive: https://github.com/yannickcr/eslint-plugin-react/issues/2324
-export default React.memo(SectionTile);
+export default SectionTile;

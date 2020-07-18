@@ -54,8 +54,6 @@ const ACTIONS = {
   initiateFetch: 'initiateFetch',
   setData: 'setData',
   fetchFailed: 'fetchFailed',
-  createNew: 'createNew',
-  deleteOld: 'deleteOld',
 };
 
 /**
@@ -73,170 +71,96 @@ function fetchStateReducer(state, action) {
     case ACTIONS.initiateFetch:
       return {
         ...state,
-        [payload.name]: {
-          inFlight: true,
-          success: false,
-          fail: false,
-          data: payload.preserveData ? state.data : null,
-          error: null,
-        },
+        inFlight: true,
+        success: false,
+        fail: false,
+        data: payload.preserveData ? state.data : null,
+        error: null,
       };
     case ACTIONS.setData:
       return {
         ...state,
-        [payload.name]: {
-          inFlight: false,
-          success: true,
-          fail: false,
-          data: payload.json,
-          error: null,
-        },
+        inFlight: false,
+        success: true,
+        fail: false,
+        data: payload.json,
+        error: null,
       };
     case ACTIONS.fetchFailed:
       return {
         ...state,
-        [payload.name]: {
-          inFlight: false,
-          success: false,
-          fail: true,
-          data: null,
-          error: payload.error,
-        },
+        inFlight: false,
+        success: false,
+        fail: true,
+        data: null,
+        error: payload.error,
       };
-    case ACTIONS.createNew:
-      return {
-        ...state,
-        [payload.name]: { ...initialFetchState },
-      };
-    case ACTIONS.deleteOld: {
-      const newState = { ...state };
-      delete newState[payload.name];
-      return newState;
-    }
     default:
       return state;
   }
 }
 
 /**
- * Wrapper around the fetch state initializer function to provide it the user-defined config object
- * @private
- * @param {Object<string, FetchConfig>} config - fetch configuration objects
- * @returns {Function} - fetch state initializer function
- */
-function initializeFetchState(config) {
-  /**
-   * Initializer function for the fetch state to copy the default fetch configuration for each given config
-   * @private
-   * @param {FetchConfig} defaultState - default fetch configuration object
-   * @returns {FetchConfig} - fetch config object with the default values filled in
-   */
-  return function(defaultState) {
-    return Object.keys(config).reduce((initState, name) => {
-      initState[name] = { ...defaultState };
-      return initState;
-    }, {});
-  };
-}
-
-/**
- * Hook wrapper for calling `fetch`
- * @param {Object<string, FetchConfig>} config - fetch configuration objects
- * @returns {Object<string, FetchState>} - collection of fetch state objects
- *    and "call" function to explicitly initiate a fetch
+ * Hook wrapper for calling `fetch`.  Manages fetch's state, providing an easy
+ * way to react to changes in the fetch's status, without having to write all
+ * the boilerplate every time.
+ * @param {FetchConfig} config - fetch configuration objects
+ * @returns {FetchState, function} - fetch state object and "call" function
+ *   to manually initiate a fetch
  */
 export default function useFido(config) {
-  // Compose each passed-in configuration with the default config object and add the call method
-  const fetchConfigs = useMemo(() => {
-    return Object.keys(config).reduce((newConfig, name) => {
-      newConfig[name] = { ...defaultFetchConfig, ...config[name] };
-      return newConfig;
-    }, {});
-  }, [config]);
+  // Compose passed-in configuration with the default config object
+  const fetchConfig = useMemo(() => ({ ...defaultFetchConfig, ...config }), [
+    config,
+  ]);
 
   // Create fetch state
   const [fetchState, dispatch] = useReducer(
     fetchStateReducer,
-    initialFetchState,
-    initializeFetchState(config)
+    initialFetchState
   );
 
+  /**
+   * Holds the abort controller responsible for managing
+   * the abort signal of the fetch while in flight
+   * @type {AbortController}
+   */
+  const abortController = useRef();
+
   // Create fetch call methods
-  const fetchCalls = useMemo(() => {
-    return Object.keys(fetchConfigs).reduce((fetchCalls, name) => {
-      fetchCalls[name] = createCall(name, fetchConfigs[name], dispatch);
-      return fetchCalls;
-    }, {});
-  }, [fetchConfigs]);
+  const callFetch = useMemo(
+    () => createCall(fetchConfig, abortController, dispatch),
+    [fetchConfig]
+  );
 
-  // Handle fetchState synchronization
-  // Probably not strictly necessary, but it's nice to handle it gracefully nonetheless
-  // Store fetch state in a ref because we only care when config changes since state is derived from config
-  const latestFetchState = useRef(fetchState);
+  // Automatically call the fetch if fetchImmediately is set
   useEffect(() => {
-    latestFetchState.current = fetchState;
-  }, [fetchState]);
-  // Update state if the shape of the config object is different
-  useEffect(() => {
-    // Initialize the state of any new names in the config
-    const configNames = Object.keys(fetchConfigs);
-    const latestState = latestFetchState.current;
-    const newNames = configNames.filter(
-      name => !(latestState[name] instanceof Object)
+    const firstRequest = !(
+      fetchState.inFlight ||
+      fetchState.success ||
+      fetchState.fail
     );
-    newNames.forEach(name => {
-      dispatch({ type: ACTIONS.createNew, payload: { name } });
-    });
+    if (firstRequest && fetchConfig.options.fetchImmediately) {
+      callFetch();
+    }
+  }, [fetchState, fetchConfig, callFetch]);
 
-    // Clean up any old state objects who's names are not in the new config
-    const stateNames = Object.keys(latestFetchState.current);
-    const oldNames = stateNames.filter(
-      name => !(fetchConfigs[name] instanceof Object)
-    );
-    oldNames.forEach(name => {
-      dispatch({ type: ACTIONS.deleteOld, payload: { name } });
-    });
-  }, [fetchConfigs]);
-
-  // Set up automatic fetch calling if option is set
-  useEffect(() => {
-    Object.keys(fetchState).forEach(name => {
-      const state = fetchState[name];
-      const config = fetchConfigs[name];
-
-      const firstRequest = !(state.inFlight || state.success || state.fail);
-      if (firstRequest && config.options.fetchImmediately) {
-        const call = fetchCalls[name];
-        call();
-      }
-    });
-  }, [fetchState, fetchConfigs, fetchCalls]);
-
-  // Compose fetch state and call functions before returning
-  return Object.keys(config).reduce((composed, name) => {
-    composed[name] = { ...fetchState[name], call: fetchCalls[name] };
-    return composed;
-  }, {});
+  // Return fetch state and call functions
+  return [fetchState, callFetch];
 }
 
 /**
- * Collection of named abort controllers to manage the abort signal of each active fetch
- * @type {Object<string, AbortController>}
- */
-const abortControllers = {};
-
-/**
  * Create the call function that initiates a fetch call
- * @param {string} name - configuration name
  * @param {FetchConfig} config - fetch configuration associated with the name
+ * @param {object} abortControllerRef - React ref
+ * @param {AbortController} [abortControllerRef.current] - abort controller of a previous request
  * @param {Function} dispatch - dispatch function provided by the useReducer hook that manages the fetch state
  * @returns {Function} - function to initiate a fetch call
  */
-// Create call function that dispatches the fetch call
-function createCall(name, config, dispatch) {
-  return function() {
+function createCall(config, abortControllerRef, dispatch) {
+  return function call() {
     const method = config.options.method.toUpperCase();
-    const abortController = new AbortController();
+    const newAbortController = new AbortController();
 
     let body = null;
     if (![HTTP_METHODS.get, HTTP_METHODS.head].includes(method)) {
@@ -247,9 +171,10 @@ function createCall(name, config, dispatch) {
     if (body) headers.append('Content-Type', 'application/json');
 
     // Abort previous fetch if there is any
-    if (abortControllers[name]) abortControllers[name].abort();
+    if (abortControllerRef.current instanceof AbortController)
+      abortControllerRef.current.abort();
     // Replace previously aborted (or new) AbortController
-    abortControllers[name] = abortController;
+    abortControllerRef.current = newAbortController;
 
     let fetchUrl = config.path;
     if (config.query) {
@@ -273,7 +198,7 @@ function createCall(name, config, dispatch) {
       referrer: 'client',
       referrerPolicy: 'no-referrer-when-downgrade',
       // include experimental abort controller signal
-      signal: abortController.signal,
+      signal: newAbortController.signal,
       // override any of these options with user-provided overrides
       ...config.fetchOptions,
     };
@@ -281,7 +206,7 @@ function createCall(name, config, dispatch) {
     // TODO: Add all fetch options to config so they can be overwritten but users
     fetch(fetchUrl, fetchOptions)
       // Process fetch response
-      .then(response => {
+      .then((response) => {
         if (!response.ok) throw new Error('No success. Such bad response.');
 
         const contentType = response.headers.get('content-type');
@@ -293,31 +218,33 @@ function createCall(name, config, dispatch) {
       })
 
       // Save returned data on success
-      .then(json => {
-        dispatch({ type: ACTIONS.setData, payload: { name, json } });
+      .then((json) => {
+        dispatch({ type: ACTIONS.setData, payload: { json } });
       })
 
       // Save error data on failure
-      .catch(error => {
+      .catch((error) => {
         // Ignore aborted fetches (don't change state)
         if (error.name === 'AbortError') {
           return;
         }
 
-        dispatch({ type: ACTIONS.setData, payload: { name, error } });
+        dispatch({ type: ACTIONS.setData, payload: { error } });
         // Rethrow so that error isn't silently swallowed
         throw new Error('No success. Cannot fetch. So Network error.');
       })
 
       // Always clear the abort controller when done processing the fetch
       .finally(() => {
-        delete abortControllers[name];
+        if (abortControllerRef.current === newAbortController) {
+          abortControllerRef.current = null;
+        }
       });
 
     // Immediately update fetch state to indicate request is in flight
     dispatch({
       type: ACTIONS.initiateFetch,
-      payload: { name, preserveData: config.options.preserveData },
+      payload: { preserveData: config.options.preserveData },
     });
   };
 }
