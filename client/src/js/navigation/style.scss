@@ -1,14 +1,14 @@
 // Navigation Bar styles
-@import '~vars.less';
+@import 'vars.scss';
 
 .ash-navbar {
   height: 50px;
-  width: calc(90vw - @left-gutter-width);
-  margin-left: @left-gutter-width;
+  width: calc(90vw - $left-gutter-width);
+  margin-left: $left-gutter-width;
   padding-left: 1%;
   display: flex;
   align-items: flex-end;
-  background-color: @app-background-color; // Non-transparent background so that tiles that scroll behind it are hidden
+  background-color: $app-background-color; // Non-transparent background so that tiles that scroll behind it are hidden
   z-index: 10; // bring in front of main
 
   .ash-logo {
@@ -22,7 +22,7 @@
   .ash-tab {
     padding: 5px 10px;
     border-radius: 5px 5px 0 0;
-    color: @app-text-color;
+    color: $app-text-color;
     text-decoration: none;
     // Makes sure the border width is accounted for an prevents shifting elements around
     border-left: solid 1px transparent;
@@ -32,8 +32,8 @@
     &:hover,
     &.ash-selected,
     &.ash-selected:hover {
-      border-color: @app-border-color;
-      background-color: @app-hover-color;
+      border-color: $app-border-color;
+      background-color: $app-hover-color;
     }
   }
 }

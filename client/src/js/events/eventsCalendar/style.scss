@@ -2,23 +2,23 @@
   display: block;
   position: relative;
   width: 100%;
-  background: @app-background-color;
-  border: 1px solid @cal-border-color;
+  background: $app-background-color;
+  border: 1px solid $cal-border-color;
 
   .header {
     text-transform: uppercase;
     font-weight: 700;
     font-size: 115%;
     padding: 1.5em 0%;
-    border-bottom: 1px solid @cal-border-color;
+    border-bottom: 1px solid $cal-border-color;
   }
   .days-of-week {
     text-transform: uppercase;
     font-weight: 400;
-    color: @cal-text-color-light;
+    color: $cal-text-color-light;
     font-size: 70%;
     padding: 0.75em 0%;
-    border-bottom: 1px solid @cal-border-color;
+    border-bottom: 1px solid $cal-border-color;
   }
 
   .calendar-event {
@@ -26,7 +26,7 @@
     position: relative;
     z-index: 1;
 
-    background: @app-foreground-color;
+    background: $app-foreground-color;
     color: white;
     border-radius: 10px;
     margin: 4px 24px 4px 4px;
@@ -41,14 +41,14 @@
     .cell {
       position: relative;
       height: 5em;
-      border-right: 1px solid @cal-border-color;
+      border-right: 1px solid $cal-border-color;
       overflow: hidden;
       cursor: pointer;
-      background: @app-background-color;
+      background: $app-background-color;
       transition: 0.25s ease-out;
 
       :hover {
-        background: @app-background-color;
+        background: $app-background-color;
         transition: 0.5s ease-out;
 
         .background {
@@ -66,13 +66,13 @@
         font-weight: 700;
       }
       .disabled {
-        color: @cal-text-color-light;
+        color: $cal-text-color-light;
         pointer-events: none;
       }
       .background {
         font-weight: 700;
         line-height: 1;
-        color: @cal-main-color;
+        color: $cal-main-color;
         opacity: 0;
         font-size: 7em;
         position: absolute;
@@ -83,7 +83,7 @@
       }
     }
     .row {
-      border-bottom: 1px solid @cal-border-color;
+      border-bottom: 1px solid $cal-border-color;
       :last-child {
         border-bottom: none;
       }

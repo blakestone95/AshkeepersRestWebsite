@@ -1,14 +1,11 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
 
 // Components
 import NavBar from 'navigation/NavBar';
 import Routing from './Routing';
 
-import 'style.less';
-
-export const history = createBrowserHistory();
+import 'style.scss';
 
 export default function App() {
   return (

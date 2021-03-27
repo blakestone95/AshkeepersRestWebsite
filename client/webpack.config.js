@@ -48,23 +48,25 @@ module.exports = (env, argv) => {
           loader: 'babel-loader',
         },
         {
-          test: /\.(less|css)$/,
-          loaders: [
+          test: /\.(scss|css)$/,
+          use: [
             // Extract CSS when in production mode: https://github.com/webpack-contrib/mini-css-extract-plugin#advanced-configuration-example
             isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
             { loader: 'css-loader', options: { sourceMap: !isProduction } },
-            { loader: 'less-loader', options: { sourceMap: !isProduction } },
+            { loader: 'sass-loader', options: { sourceMap: !isProduction } },
           ],
         },
         {
           // Copied from https://github.com/coryhouse/react-slingshot/issues/128
           test: /\.(jpe?g|ico|gif|png|svg|woff|ttf|wav|mp3)$/,
-          use: {
-            loader: 'file-loader',
-            options: {
-              name: '[path][name].[ext]',
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: '[path][name].[ext]',
+              },
             },
-          },
+          ],
         },
       ],
     },

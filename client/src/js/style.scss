@@ -1,5 +1,5 @@
-@import '~normalize.less';
-@import '~vars.less';
+@import 'normalize.scss';
+@import 'vars.scss';
 
 // Application wide styles go here
 html {
@@ -27,17 +27,17 @@ header {
 
 body {
   height: 100vh;
-  background-color: @app-background-color;
+  background-color: $app-background-color;
 }
 
 div {
-  color: @app-text-color;
+  color: $app-text-color;
 }
 
 h1 {
   font-size: 36px;
   font-weight: 400;
-  border-bottom: 2px solid @app-foreground-color;
+  border-bottom: 2px solid $app-foreground-color;
 }
 
 #app {
@@ -46,21 +46,21 @@ h1 {
 
 .ash-divider {
   position: fixed;
-  top: @header-height;
-  left: @left-gutter-width;
-  width: calc(90vw - @left-gutter-width);
-  height: @divider-height;
+  top: $header-height;
+  left: $left-gutter-width;
+  width: calc(90vw - $left-gutter-width);
+  height: $divider-height;
   margin: 0;
   border: none;
-  background-color: @app-border-color;
+  background-color: $app-border-color;
   z-index: 11; // bring in front of nav bar
 }
 
 .ash-main {
-  width: calc(90vw - @left-gutter-width);
+  width: calc(90vw - $left-gutter-width);
   position: absolute;
-  top: calc(@header-height + @divider-height);
-  left: @left-gutter-width;
+  top: calc($header-height + $divider-height);
+  left: $left-gutter-width;
 }
 
 // Imports
