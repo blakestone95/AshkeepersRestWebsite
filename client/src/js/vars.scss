@@ -8,7 +8,9 @@ $app-hover-color: #444;
 // Accent color
 $orange: #d26031;
 
-$left-gutter-width: 190px;
+$logo-width: 150px;
+$logo-margin: 20px;
+$left-gutter-width: $logo-width + 2 * $logo-margin;
 $header-height: 50px;
 $divider-height: 4px;
 $content-width: 1000px;

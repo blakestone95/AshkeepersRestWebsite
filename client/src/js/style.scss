@@ -18,11 +18,9 @@ html {
 }
 
 header {
-  position: fixed;
+  position: sticky; // Works better than fixed for horizontal scrolling
   top: 0;
-  left: 0;
-  right: 0;
-  height: 50px;
+  height: $header-height;
 }
 
 body {

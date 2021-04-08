@@ -2,7 +2,6 @@
 @import 'vars.scss';
 
 .ash-navbar {
-  height: $header-height;
   max-width: $content-width;
   width: $content-width;
   margin-left: $left-gutter-width;
@@ -13,11 +12,11 @@
   border-bottom: $divider-height solid $app-border-color;
 
   .ash-logo {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    height: 150px;
-    width: 150px;
+    position: absolute;
+    top: $logo-margin;
+    left: -$logo-width - $logo-margin;
+    height: $logo-width;
+    width: $logo-width;
   }
 
   .ash-nav {
