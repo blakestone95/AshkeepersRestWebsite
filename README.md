@@ -71,7 +71,7 @@ The api server should now be installed and running on [http://localhost:8080/api
 
 The development build is the default configuration. To run the project, do the following:
 
-1. Enter the bash shell of the api container with `docker-compose exec api bash`
+1. Enter the bash shell of the api container with `docker-compose exec client bash`
 1. Move to the front end directory with `cd client`
 1. Run `npm start` to run webpack dev server
 1. Access the dev site on [http://localhost:8000](http://localhost:8000) (rather than port 8080)
