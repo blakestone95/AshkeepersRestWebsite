@@ -44,22 +44,10 @@ h1 {
   height: 100vh;
 }
 
-.ash-divider {
-  position: fixed;
-  top: $header-height;
-  left: $left-gutter-width;
-  width: calc(90vw - $left-gutter-width);
-  height: $divider-height;
-  margin: 0;
-  border: none;
-  background-color: $app-border-color;
-  z-index: 11; // bring in front of nav bar
-}
-
 .ash-main {
-  width: calc(90vw - $left-gutter-width);
+  width: $content-width;
   position: absolute;
-  top: calc($header-height + $divider-height);
+  top: $header-height + $divider-height;
   left: $left-gutter-width;
 }
 

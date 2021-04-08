@@ -2,14 +2,15 @@
 @import 'vars.scss';
 
 .ash-navbar {
-  height: 50px;
-  width: calc(90vw - $left-gutter-width);
+  height: $header-height;
+  max-width: $content-width;
+  width: $content-width;
   margin-left: $left-gutter-width;
-  padding-left: 1%;
   display: flex;
   align-items: flex-end;
   background-color: $app-background-color; // Non-transparent background so that tiles that scroll behind it are hidden
   z-index: 10; // bring in front of main
+  border-bottom: $divider-height solid $app-border-color;
 
   .ash-logo {
     position: fixed;
@@ -19,21 +20,40 @@
     width: 150px;
   }
 
-  .ash-tab {
-    padding: 5px 10px;
-    border-radius: 5px 5px 0 0;
+  .ash-nav {
+    height: $header-height - $divider-height;
+    line-height: $header-height - $divider-height; // Center text in div
+    padding: 0 10px;
     color: $app-text-color;
     text-decoration: none;
-    // Makes sure the border width is accounted for an prevents shifting elements around
-    border-left: solid 1px transparent;
-    border-top: solid 1px transparent;
-    border-right: solid 1px transparent;
 
-    &:hover,
-    &.ash-selected,
-    &.ash-selected:hover {
-      border-color: $app-border-color;
-      background-color: $app-hover-color;
+    &:first-of-type {
+      margin-left: 16px;
+    }
+
+    .ash-nav-label {
+      margin: auto 0;
+      position: relative;
+
+      &::after {
+        content: '';
+        width: 0;
+        height: 2px;
+        left: 0;
+        bottom: 0;
+        position: absolute;
+        background-color: $orange;
+        box-shadow: 0 -1px 5px $orange;
+        transition: width 0.3s ease-in-out;
+      }
+    }
+
+    &:hover .ash-nav-label,
+    &.ash-selected .ash-nav-label,
+    &.ash-selected:hover .ash-nav-label {
+      &::after {
+        width: 100%;
+      }
     }
   }
 }

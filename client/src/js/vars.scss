@@ -1,14 +1,20 @@
+// Main colors
 $app-background-color: #222;
 $app-foreground-color: #333;
 $app-border-color: #777;
 $app-text-color: #eee;
 $app-hover-color: #444;
 
-$header-height: 50px;
-$divider-height: 4px;
+// Accent color
+$orange: #d26031;
 
 $left-gutter-width: 190px;
+$header-height: 50px;
+$divider-height: 4px;
+$content-width: 1000px;
 
+// Calendar colors
+// TODO: refactor calendar
 $cal-main-color: #ffffff;
 $cal-text-color: #777;
 $cal-text-color-light: #ccc;

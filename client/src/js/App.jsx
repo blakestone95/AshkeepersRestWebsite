@@ -11,7 +11,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <NavBar />
-      <hr className="ash-divider" />
       <main className="ash-main">
         <Routing />
       </main>
