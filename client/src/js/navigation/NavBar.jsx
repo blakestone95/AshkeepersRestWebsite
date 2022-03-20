@@ -16,26 +16,26 @@ class NavBar extends React.Component {
         <NavLink
           replace
           to={PATHS.Home.path}
-          className="ash-tab"
+          className="ash-nav"
           activeClassName="ash-selected"
         >
-          Home
+          <div className="ash-nav-label">Home</div>
         </NavLink>
         <NavLink
           replace
           to={PATHS.AnnouncementBoard.path}
-          className="ash-tab"
+          className="ash-nav"
           activeClassName="ash-selected"
         >
-          Announcements
+          <div className="ash-nav-label">Announcements</div>
         </NavLink>
         <NavLink
           replace
           to={PATHS.EventsCalendar.path}
-          className="ash-tab"
+          className="ash-nav"
           activeClassName="ash-selected"
         >
-          Events
+          <div className="ash-nav-label">Events</div>
         </NavLink>
       </header>
     );

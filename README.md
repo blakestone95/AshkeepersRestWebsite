@@ -37,21 +37,29 @@ Use whatever you want, but if you're not sure what to choose, consider [Visual S
    - The first run will take a while as the containers need to be built but subsequent runs should be fast
    - You can use `docker-compose up -d` when you don't need to build the containers
 
+1. (Unix only) Create dependency folders
+
+   `mkdir ./server/vendor && mkdir ./client/node_modules`
+
+   - If these directories are not created by the user, they will be created by docker and automatically be owned by root, inaccessible to the containers
+   - For a more customize setup, you may want to change the uid and gid that docker uses for the containers' users (just don't commit any of those changes to the repo).  The containers use users with uid 1000 and gid 1000 by default.
+   - The subsequent steps will fail with a permissions error if you don't do this part
+
 1. Run the server install script to setup Laravel
 
-   `docker-compose exec api ./install-dev.sh`
+   `docker-compose exec api bash -c "cd server && ./install.sh"`
 
    - This installs PHP dependencies and seeds the database
    - You can rerun this command to revert the dev environment to it's default state
 
 1. Run the front end install command to setup React
 
-   `docker-compose exec client bash -c "cd ./client && npm install"`
+   `docker-compose exec client bash -c "cd client && npm install"`
 
    - This installs JS dependencies and also loads any git hooks defined in [githooks](githooks) with a postinstall script
    - Use the follow command instead if you are using the production build:
 
-   `docker-compose exec client bash -c "cd ./client && npm install && npm build"`
+   `docker-compose exec client bash -c "cd client && npm install && npm build"`
 
 ### API Server
 
@@ -63,7 +71,7 @@ The api server should now be installed and running on [http://localhost:8080/api
 
 The development build is the default configuration. To run the project, do the following:
 
-1. Enter the bash shell of the api container with `docker-compose exec api bash`
+1. Enter the bash shell of the api container with `docker-compose exec client bash`
 1. Move to the front end directory with `cd client`
 1. Run `npm start` to run webpack dev server
 1. Access the dev site on [http://localhost:8000](http://localhost:8000) (rather than port 8080)
